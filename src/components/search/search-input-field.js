@@ -1,10 +1,12 @@
 import React from 'react';
 import {AutoComplete, Icon, Input} from 'antd';
+import {Logger} from '@aws-amplify/core';
 
 const {Option, OptGroup} = AutoComplete;
 
-export class SearchInput extends React.Component {
+export class SearchInputField extends React.Component {
 
+    logger = new Logger("SearchInputField");
     dataSource = [
         {
             id: 'podcasts',
@@ -79,9 +81,14 @@ export class SearchInput extends React.Component {
         );
     }
 
+    kickoffSearch(query) {
+        this.logger.debug("search query: " + query);
+
+    }
+
     render() {
         return (<div>
-            <div className="certain-category-search-wrapper" style={{width: 250}}>
+            <div className="certain-category-search-wrapper" style={{width: "90%"}}>
                 <AutoComplete
                     className="certain-category-search"
                     dropdownClassName="certain-category-search-dropdown"

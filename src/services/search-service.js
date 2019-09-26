@@ -1,7 +1,32 @@
 export class SearchService {
 
-    static search(queryString) {
+    podcastsMock = [{title: "Jordan Peterson",
+        description: "A really engaging and indepth discussion about things of nature "},
+        {title: "Jordan Peterson",
+            description: "A really engaging and indepth discussion about things of nature "},
+        {title: "Jordan Peterson",
+            description: "A really engaging and indepth discussion about things of nature "},
+        {title: "Jordan Peterson",
+            description: "A really engaging and indepth discussion about things of nature "},
+        {title: "Jordan Peterson",
+            description: "A really engaging and indepth discussion about things of nature "},
+        {title: "Jordan Peterson",
+            description: "A really engaging and indepth discussion about things of nature "},
+        {title: "Jordan Peterson",
+            description: "A really engaging and indepth discussion about things of nature "},
+        {title: "Jordan Peterson",
+            description: "A really engaging and indepth discussion about things of nature "},
+        {title: "Jordan Peterson",
+            description: "A really engaging and indepth discussion about things of nature "},]
 
-        return ""
+     getEpisodes(queryString) {
+
+         return this.podcastsMock
+
     }
+
+     getPodcasts(queryString) {
+     return this.podcastsMock
+    }
+
 }
