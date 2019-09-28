@@ -1,10 +1,12 @@
 {
   "name": "bn-web-app",
+  "author": "Vladimir Budilov",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@aws-amplify/core": "^1.1.2",
     "antd": "3.23.3",
+    "aws-amplify": "^1.1.40",
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "react-player": "^1.13.0",
