@@ -60,6 +60,10 @@ class RegisterConfirmForm extends React.Component {
             }
         });
     };
+    componentWillUnmount() {
+        this.logger.info("Removing HUB subscription to " + AuthService.CHANNEL);
+        Hub.remove(AuthService.CHANNEL, this.onHubCapsule);
+    }
 
     render() {
         const {getFieldDecorator} = this.props.form;

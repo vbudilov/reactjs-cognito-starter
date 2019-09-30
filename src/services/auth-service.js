@@ -14,6 +14,7 @@ export class AuthService {
         PASSWORD_CHANGE: 'password_change',
         SIGN_OUT: 'sign_out'
     };
+
     static register = async (username, password) => {
         Auth.signUp({
             username,
@@ -23,10 +24,10 @@ export class AuthService {
             logger.info("Registering " + username);
 
             Hub.dispatch(AuthService.CHANNEL, {
-                "event": AuthService.AUTH_EVENTS.REGISTER,
-                "success": true,
-                "message": "",
-                "username": username,
+                event: AuthService.AUTH_EVENTS.REGISTER,
+                success: true,
+                message: "",
+                username: username,
                 "password": password,
 
             }, AuthService.CHANNEL);
@@ -34,10 +35,10 @@ export class AuthService {
         }).catch(err => {
             logger.info("Error: " + JSON.stringify(err));
             Hub.dispatch(AuthService.CHANNEL, {
-                "event": AuthService.AUTH_EVENTS.REGISTER,
-                "success": false,
-                "message": err.message,
-                "username": username,
+                event: AuthService.AUTH_EVENTS.REGISTER,
+                success: false,
+                message: err.message,
+                username: username,
                 "password": password
             }, AuthService.CHANNEL);
 
@@ -59,11 +60,11 @@ export class AuthService {
                 logger.info("login user " + JSON.stringify(user));
 
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.LOGIN,
-                    "success": true,
-                    "message": "",
-                    "username": username,
-                    "user": user,
+                    event: AuthService.AUTH_EVENTS.LOGIN,
+                    success: true,
+                    message: "",
+                    username: username,
+                    user: user,
                 }, AuthService.CHANNEL);
 
             })
@@ -71,11 +72,10 @@ export class AuthService {
                 logger.warn("Couldn't login: ", err);
 
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.LOGIN,
-                    "success": false,
-                    "message": err.message,
-                    "email": username,
-                    "error": err
+                    event: AuthService.AUTH_EVENTS.LOGIN,
+                    success: false,
+                    message: err.message,
+                    error: err
                 }, AuthService.CHANNEL);
             });
     };
@@ -87,19 +87,19 @@ export class AuthService {
             logger.info("Registration confirmed: " + JSON.stringify(data));
             Hub.dispatch(AuthService.CHANNEL,
                 {
-                    "event": AuthService.AUTH_EVENTS.REGISTER_CONFIRM,
-                    "success": true,
-                    "message": "",
-                    "username": username,
-                    "user": data
+                    event: AuthService.AUTH_EVENTS.REGISTER_CONFIRM,
+                    success: true,
+                    message: "",
+                    username: username,
+                    user: data
                 }, AuthService.CHANNEL);
         }).catch(err => {
             logger.error(err);
             Hub.dispatch(AuthService.CHANNEL,
                 {
-                    "event": AuthService.AUTH_EVENTS.REGISTER_CONFIRM,
-                    "success": false,
-                    "message": err.message
+                    event: AuthService.AUTH_EVENTS.REGISTER_CONFIRM,
+                    success: false,
+                    message: err.message
                 }, AuthService.CHANNEL);
         });
 
@@ -110,17 +110,17 @@ export class AuthService {
             .then(data => {
                 logger.info(data);
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.SIGN_OUT,
-                    "success": true,
-                    "message": "",
-                    "data": data
+                    event: AuthService.AUTH_EVENTS.SIGN_OUT,
+                    success: true,
+                    message: "",
+                    data: data
                 }, AuthService.CHANNEL);
             })
             .catch(err => {
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.SIGN_OUT,
-                    "success": false,
-                    "message": "",
+                    event: AuthService.AUTH_EVENTS.SIGN_OUT,
+                    success: false,
+                    message: "",
                 }, AuthService.CHANNEL);
             });
 
@@ -135,18 +135,19 @@ export class AuthService {
             .then(data => {
                 logger.info(data);
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.PASSWORD_CHANGE,
-                    "success": true,
-                    "message": "", "data": data
+                    event: AuthService.AUTH_EVENTS.PASSWORD_CHANGE,
+                    success: true,
+                    message: "",
+                    data: data
                 }, AuthService.CHANNEL);
 
             })
             .catch(err => {
                 logger.info(err);
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.PASSWORD_CHANGE,
-                    "success": false,
-                    "message": err.message
+                    event: AuthService.AUTH_EVENTS.PASSWORD_CHANGE,
+                    success: false,
+                    message: err.message
                 }, AuthService.CHANNEL);
                 return err;
             });
@@ -163,20 +164,20 @@ export class AuthService {
             .then(data => {
                 logger.info("Password reset: " + data);
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.PASSWORD_RESET,
-                    "success": true,
-                    "message": "",
-                    "data": data,
-                    "username": username
+                    event: AuthService.AUTH_EVENTS.PASSWORD_RESET,
+                    success: true,
+                    message: "",
+                    data: data,
+                    username: username
                 }, AuthService.CHANNEL);
             })
             .catch(err => {
                 logger.info(err);
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.PASSWORD_RESET,
-                    "success": false,
-                    "message": err.message,
-                    "username": username
+                    event: AuthService.AUTH_EVENTS.PASSWORD_RESET,
+                    success: false,
+                    message: err.message,
+                    username: username
                 }, AuthService.CHANNEL);
                 return err;
             });
@@ -196,18 +197,21 @@ export class AuthService {
             .then(data => {
                 logger.info("Changed password: " + data);
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.PASSWORD_RESET_2,
-                    "success": true,
-                    "message": "", "data": data
+                    event: AuthService.AUTH_EVENTS.PASSWORD_RESET_2,
+                    success: true,
+                    username: username,
+                    password: newPassword,
+                    message: "",
+                    data: data
                 }, AuthService.CHANNEL);
             })
             .catch(err => {
                 logger.error("Couldn't change password: ", err);
                 Hub.dispatch(AuthService.CHANNEL, {
-                    "event": AuthService.AUTH_EVENTS.PASSWORD_RESET_2,
-                    "success": false,
-                    "message": err.message,
-                    "data": err
+                    event: AuthService.AUTH_EVENTS.PASSWORD_RESET_2,
+                    success: false,
+                    message: err.message,
+                    data: err
                 }, AuthService.CHANNEL);
 
                 return err;

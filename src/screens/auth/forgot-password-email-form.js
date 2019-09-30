@@ -1,4 +1,4 @@
-import {Button, Form, Icon, Input, Row} from 'antd';
+import {Button, Form, Icon, Input, notification, Row} from 'antd';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Hub, Logger} from "@aws-amplify/core";
@@ -21,7 +21,7 @@ class ForgotPasswordEmailForm extends React.Component {
 
     constructor(props) {
         super(props);
-        Hub.listen('auth', this.onHubCapsule, 'MyListener');
+        Hub.listen(AuthService.CHANNEL, this.onHubCapsule, 'MyListener');
     }
 
     onHubCapsule = (capsule) => {
@@ -30,10 +30,22 @@ class ForgotPasswordEmailForm extends React.Component {
             this.logger.info(payload.message);
             if (!payload.success) {
                 this.setState({errorMessage: payload.message})
+                notification.open({
+                    type: 'error',
+                    message: "Couldn't reset your password",
+                    description: payload.message,
+                    duration: 15
+                });
             } else {
                 this.setState({errorMessage: null});
-                this.logger.info("Redirecting");
-                this.props.history.push("/auth/login")
+                notification.open({
+                    type: 'info',
+                    message: 'Check your mail. Use the code to change your password',
+                    duration: 15
+                });
+
+                this.props.history.push("/forgotpassword2")
+
             }
         }
     };
@@ -43,9 +55,15 @@ class ForgotPasswordEmailForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.logger.info('Received values of form: ', values);
+                AuthService.forgotPassword(values.username);
             }
         });
     };
+
+    componentWillUnmount() {
+        this.logger.info("Removing HUB subscription to " + AuthService.CHANNEL);
+        Hub.remove(AuthService.CHANNEL, this.onHubCapsule);
+    }
 
     render() {
         const {getFieldDecorator} = this.props.form;

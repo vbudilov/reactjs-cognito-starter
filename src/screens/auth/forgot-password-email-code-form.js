@@ -1,4 +1,4 @@
-import {Button, Form, Icon, Input, Row} from 'antd';
+import {Button, Form, Icon, Input, notification, Row} from 'antd';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Hub, Logger} from "@aws-amplify/core";
@@ -20,23 +20,28 @@ class ForgotPasswordEmailCodeForm extends React.Component {
 
     constructor(props) {
         super(props);
-        Hub.listen('auth', this.onHubCapsule, 'MyListener');
+        Hub.listen(AuthService.CHANNEL, this.onHubCapsule, 'MyListener');
     }
 
     // Default handler for listening events
     onHubCapsule = (capsule) => {
         const {channel, payload} = capsule;
-        if (channel === AuthService.CHANNEL && payload.event === AuthService.AUTH_EVENTS.PASSWORD_RESET_2) {
-            if (channel === 'auth' && payload.event === 'forgotPassword') {
-                console.log(payload.message);
+        if (channel === AuthService.CHANNEL &&
+            payload.event === AuthService.AUTH_EVENTS.PASSWORD_RESET_2) {
+                this.logger.info(payload.message);
                 if (!payload.success) {
                     this.setState({errorMessage: payload.message})
+                    notification.open({
+                        type: 'error',
+                        message: "Couldn't change your password",
+                        description: payload.message,
+                        duration: 15
+                    });
+
                 } else {
                     this.setState({errorMessage: null});
-                    console.log("Redirecting");
-                    this.props.history.push("/auth/login")
+                    AuthService.login(payload.username, payload.password);
                 }
-            }
         }
     };
 
@@ -44,10 +49,16 @@ class ForgotPasswordEmailCodeForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                this.logger.info('Received values of form: ', values);
+                AuthService.forgotPasswordSetNew(values.username, values.code, values.password)
             }
         });
     };
+
+    componentWillUnmount() {
+        this.logger.info("Removing HUB subscription to " + AuthService.CHANNEL);
+        Hub.remove(AuthService.CHANNEL, this.onHubCapsule);
+    }
 
     render() {
         const {getFieldDecorator} = this.props.form;
@@ -66,6 +77,7 @@ class ForgotPasswordEmailCodeForm extends React.Component {
                             })(
                                 <Input
                                     prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                    type="email"
                                     placeholder="Email"
                                 />,
                             )}

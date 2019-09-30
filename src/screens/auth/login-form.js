@@ -1,17 +1,17 @@
-import {Button, Checkbox, Form, Icon, Input, notification, Row} from 'antd';
+import {Button, Form, Icon, Input, notification, Row} from 'antd';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {AuthService} from "../../services/auth-service";
 import {Hub, Logger} from '@aws-amplify/core';
 import {Auth} from "aws-amplify";
 
-const logger = new Logger('AuthService');
 
 class LoginForm extends React.Component {
+    logger = new Logger('AuthService');
 
     styles = {
         loginForm: {
-            "max-width": "300px"
+            "maxWidth": "300px"
         },
         loginFormForgot: {
             "float": "right"
@@ -23,15 +23,32 @@ class LoginForm extends React.Component {
 
     constructor(props) {
         super(props);
+
         Hub.listen(AuthService.CHANNEL, this.onHubCapsule, 'MyListener');
+    }
+
+    componentDidMount() {
+        // Check if the user is already logged-in...if so, redirect
+        Auth.currentAuthenticatedUser({
+            bypassCache: true  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+        }).then(user => {
+            this.props.history.push("/")
+
+        })
+            .catch(err => console.log(err));
+    }
+
+    componentWillUnmount() {
+        this.logger.info("Removing HUB subscription to " + AuthService.CHANNEL);
+        Hub.remove(AuthService.CHANNEL, this.onHubCapsule);
     }
 
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                logger.info('Received values of form: ', values);
-                AuthService.login(values.username, values.password, true)
+                this.logger.debug('Received values of form: ', values);
+                AuthService.login(values.username, values.password)
             }
         });
     };
@@ -40,9 +57,9 @@ class LoginForm extends React.Component {
     onHubCapsule = (capsule) => {
         const {channel, payload} = capsule;
         if (channel === AuthService.CHANNEL && payload.event === AuthService.AUTH_EVENTS.LOGIN) {
-            logger.info("Hub Payload: " + JSON.stringify(payload));
+            this.logger.info("Hub Payload: " + JSON.stringify(payload));
             if (!payload.success) {
-                logger.info("Payload error: " + JSON.stringify(payload.error));
+                this.logger.info("Payload error: " + JSON.stringify(payload.error));
 
                 this.setState({errorMessage: payload.message});
 
@@ -58,7 +75,7 @@ class LoginForm extends React.Component {
                     // Resending another code
                     AuthService.resendConfirmationCode(payload.email);
 
-                    this.props.history.push("/registerconfirms");
+                    this.props.history.push("/registerconfirm");
 
 
                 } else {
@@ -73,8 +90,6 @@ class LoginForm extends React.Component {
                 notification.open({
                     type: 'success',
                     message:
-                        'Welcome ' +
-                        payload.user.idToken.payload.email +
                         ' You have successfully logged in!',
                     description: 'Welcome!',
                 });
@@ -115,17 +130,17 @@ class LoginForm extends React.Component {
                             )}
                         </Form.Item>
                         <Form.Item>
-                            {getFieldDecorator('remember', {
-                                valuePropName: 'checked',
-                                initialValue: true,
-                            })(<Checkbox>Remember me</Checkbox>)}
+                            {/*{getFieldDecorator('remember', {*/}
+                            {/*    valuePropName: 'checked',*/}
+                            {/*    initialValue: true,*/}
+                            {/*})(<Checkbox>Remember me</Checkbox>)}*/}
                             <Link style={this.styles.loginFormForgot} to="forgotpassword1">
                                 Forgot password
                             </Link>
                             <Button type="primary" htmlType="submit" style={this.styles.loginFormButton}>
                                 Log in
                             </Button>
-                            Or <Link to="register">register now!</Link>
+                            Don't have an account? <Link to="register">Register here</Link>
                         </Form.Item>
                     </Form>
                 </Row>

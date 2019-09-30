@@ -1,7 +1,9 @@
 import React from 'react';
-import {Avatar, Icon, Menu} from "antd";
+import {Avatar, Icon, Menu, notification} from "antd";
 import {Link} from "react-router-dom";
 import {Hub} from "@aws-amplify/core";
+import {AuthService} from "../../services/auth-service";
+import {Auth} from "aws-amplify";
 
 export class MyMenuTopMain extends React.Component {
 
@@ -11,15 +13,49 @@ export class MyMenuTopMain extends React.Component {
 
     constructor(props) {
         super(props);
-        Hub.listen('navigation', (data) => {
-            const {payload} = data;
-            this.onAuthEvent(payload);
-            console.log('A new auth event has happened: ', data.payload.data.username + ' has ' + data.payload.event);
-        })
+
+        Hub.listen(AuthService.CHANNEL, this.onHubCapsule, 'MyListener');
     }
+
+    componentDidMount() {
+        // Check if the user is already logged-in...if so, redirect
+        Auth.currentAuthenticatedUser({
+            bypassCache: true
+        }).then(user => {
+            this.setState({loggedIn: true});
+        })
+            .catch(err => {
+                this.setState({loggedIn: false});
+            });
+    }
+
+
+    onHubCapsule = (capsule) => {
+        const {channel, payload} = capsule;
+        if (channel === AuthService.CHANNEL &&
+            payload.event === AuthService.AUTH_EVENTS.LOGIN) {
+            if (payload.success) {
+                this.setState({loggedIn: true, username: payload.username});
+            }
+        } else if (channel === AuthService.CHANNEL &&
+            payload.event === AuthService.AUTH_EVENTS.SIGN_OUT) {
+            if (payload.success) {
+                this.setState({loggedIn: false, username: ""});
+                notification.open({
+                    type: 'info',
+                    message: 'You have logged out',
+                    duration: 10
+                });
+            }
+        }
+    };
 
     onAuthEvent(payload) {
         // ... your implementation
+    }
+
+    logout() {
+        AuthService.signOut()
     }
 
     render() {
@@ -38,15 +74,14 @@ export class MyMenuTopMain extends React.Component {
                 }
             >
                 <Menu.ItemGroup title="Settings">
-                    <Menu.Item key="setting:3"><Link to="settings">Notifications</Link></Menu.Item>
-                    <Menu.Item key="setting:4"><Link to="settings">ETC</Link></Menu.Item>
-                    <Menu.Item key="setting:5"><Link to="settings">ETC</Link></Menu.Item>
+                    <Menu.Item key="setting:1"><Link to="settings">Profile</Link></Menu.Item>
+                    <Menu.Item key="setting:2"><Link to="settings">Settings</Link></Menu.Item>
                 </Menu.ItemGroup>
 
                 {this.state.loggedIn &&
-                <Menu.Item key="setting:1"><Link to="logout"><Icon type="home"/> Log Out</Link></Menu.Item>}
+                <Menu.Item key="auth:1" onClick={this.logout}><Icon type="home"/> Log Out</Menu.Item>}
                 {!this.state.loggedIn &&
-                <Menu.Item key="setting:2"><Link to="login"><Icon type="home"/> Log In</Link></Menu.Item>}
+                <Menu.Item key="auth:2"><Link to="login"><Icon type="home"/> Log In</Link></Menu.Item>}
             </Menu.SubMenu>
 
         </Menu>)
