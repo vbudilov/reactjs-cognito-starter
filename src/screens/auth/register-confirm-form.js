@@ -1,12 +1,13 @@
 import {Button, Form, Icon, Input, notification, Row} from 'antd';
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {Hub, Logger} from '@aws-amplify/core';
 import {AuthService} from "../../services/auth-service";
+import {Link} from "react-router-dom";
 
-class RegisterForm extends React.Component {
+class RegisterConfirmForm extends React.Component {
 
-    logger = new Logger("RegisterForm");
+    logger = new Logger("RegisterConfirmForm");
+
     styles = {
         loginForm: {
             "max-width": "300px"
@@ -27,38 +28,46 @@ class RegisterForm extends React.Component {
     // Default handler for listening events
     onHubCapsule = (capsule) => {
         const {channel, payload} = capsule;
-        if (channel === AuthService.CHANNEL && payload.event === AuthService.AUTH_EVENTS.REGISTER) {
+        if (channel === AuthService.CHANNEL &&
+            (AuthService.AUTH_EVENTS.REGISTER_CONFIRM )) {
             if (!payload.success) {
-                this.setState({errorMessage: payload.message});
+                this.setState({errorMessage: payload.message})
                 notification.open({
                     type: 'error',
-                    message: 'Could not register',
+                    message: 'Could not log in',
                     description: payload.message,
                     duration: 10
                 });
             } else {
-                // Successful registration -- now let's confirm the email with a code (route to the next screen)
-                this.props.history.push("/registerconfirm")
+                notification.open({
+                    type: 'success',
+                    message:
+                        'Perfect!',
+                    description: 'You have confirmed your email. Now you can login',
+                    duration: 15
+                });
+                this.props.history.push("/login")
             }
         }
     };
 
     handleSubmit = e => {
         e.preventDefault();
-        this.props.form.validateFields(async (err, values) => {
+        this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.logger.info('Received values of form: ', values);
-                await AuthService.register(values.username, values.password);
+                AuthService.confirmSignUp(values.username, values.code);
             }
         });
     };
 
     render() {
         const {getFieldDecorator} = this.props.form;
+
         return (
             <div>
                 <Row style={{display: 'flex', justifyContent: 'center', margin: "15px"}}>
-                    Register
+                    Use the emailed code to confirm your email
                 </Row>
                 <Row>
                     <Form onSubmit={this.handleSubmit} style={this.styles.loginForm}>
@@ -73,21 +82,22 @@ class RegisterForm extends React.Component {
                             )}
                         </Form.Item>
                         <Form.Item>
-                            {getFieldDecorator('password', {
-                                rules: [{required: true, message: 'Please input your Password!'}],
+                            {getFieldDecorator('code', {
+                                rules: [{required: true, message: 'Please input your code!'}],
                             })(
                                 <Input
                                     prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                    type="password"
-                                    placeholder="Password"
+                                    type="string"
+                                    placeholder="Code"
                                 />,
                             )}
                         </Form.Item>
                         <Form.Item>
+
                             <Button type="primary" htmlType="submit" style={this.styles.loginFormButton}>
-                                Register
+                                Confirm Email
                             </Button>
-                            Already registered? <Link to="login">login</Link>
+                            Already confirmed? <Link to="login">Login</Link>
                         </Form.Item>
                     </Form>
                 </Row>
@@ -99,4 +109,4 @@ class RegisterForm extends React.Component {
 }
 
 export const
-    WrappedRegisterForm = Form.create({name: 'normal_login'})(RegisterForm);
+    WrappedRegisterConfirmForm = Form.create({name: 'normal_login'})(RegisterConfirmForm);

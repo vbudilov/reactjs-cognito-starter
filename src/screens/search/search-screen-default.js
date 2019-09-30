@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon, Row, Tabs} from "antd";
+import {Icon, Tabs} from "antd";
 import {EpisodesSearchResult} from "./episodes-search-result";
 import {PodcastsSearchResult} from "./podcasts-search-result";
 

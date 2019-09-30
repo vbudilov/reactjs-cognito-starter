@@ -42,7 +42,7 @@ export class SearchInputField extends React.Component {
                 },
             ],
         }
-    }
+    };
 
     options = this.dataSource
         .map(group => (

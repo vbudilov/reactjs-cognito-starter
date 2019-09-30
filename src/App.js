@@ -39,6 +39,7 @@ export class App extends React.Component {
                                 <Route path={"/registerconfirm"} component={AuthScreen}/>
                                 <Route path={"/forgotpassword1"} component={AuthScreen}/>
                                 <Route path={"/forgotpassword2"} component={AuthScreen}/>
+
                             </div>
                         </Content>
                         <Footer style={{textAlign: 'center'}}>BrainyNinja.com © 2019 </Footer>

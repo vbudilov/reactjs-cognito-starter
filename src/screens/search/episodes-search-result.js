@@ -1,7 +1,6 @@
 import React from 'react';
 import {SearchService} from "../../services/search-service";
-import {Button, Icon, Card, Modal, List, Avatar} from "antd";
-import {EpisodeDetailedScreen} from "./episode-detailed-screen";
+import {Avatar, Icon, List} from "antd";
 
 const listData = [];
 for (let i = 0; i < 23; i++) {
@@ -16,9 +15,9 @@ for (let i = 0; i < 23; i++) {
     });
 }
 
-const IconText = ({ type, text }) => (
+const IconText = ({type, text}) => (
     <span>
-    <Icon type={type} style={{ marginRight: 8 }} />
+    <Icon type={type} style={{marginRight: 8}}/>
         {text}
   </span>
 );
@@ -30,7 +29,7 @@ export class EpisodesSearchResult extends React.Component {
 
     state = {
         modal2Visible: false,
-    }
+    };
 
 
     componentWillMount() {
@@ -42,7 +41,7 @@ export class EpisodesSearchResult extends React.Component {
     }
 
     setModal2Visible(modal2Visible, episodeId) {
-        this.setState({ modal2Visible: modal2Visible });
+        this.setState({modal2Visible: modal2Visible});
     }
 
     render() {
@@ -67,9 +66,9 @@ export class EpisodesSearchResult extends React.Component {
                         <List.Item
                             key={item.title}
                             actions={[
-                                <IconText type="star-o" text="156" key="list-vertical-star-o" />,
-                                <IconText type="like-o" text="156" key="list-vertical-like-o" />,
-                                <IconText type="message" text="2" key="list-vertical-message" />,
+                                <IconText type="star-o" text="156" key="list-vertical-star-o"/>,
+                                <IconText type="like-o" text="156" key="list-vertical-like-o"/>,
+                                <IconText type="message" text="2" key="list-vertical-message"/>,
                             ]}
                             extra={
                                 <img
@@ -80,7 +79,7 @@ export class EpisodesSearchResult extends React.Component {
                             }
                         >
                             <List.Item.Meta
-                                avatar={<Avatar src={item.avatar} />}
+                                avatar={<Avatar src={item.avatar}/>}
                                 title={<a href={item.href}>{item.title}</a>}
                                 description={item.description}
                             />

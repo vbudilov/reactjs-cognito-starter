@@ -1,8 +1,6 @@
 ## ReactJS + Cognito + AntD QuickStart
 Use this project to quickly get started with ReactJS + Cognito.
 
-This project is meant to guide you rather than substitute a fully-responsive and well-designed ReactJS-based template. Although it's mostly responsive, some of the elements need to be improved, such as the minimized menu (it needs to show additional menu fields upon being inlined).
-
 ## Update the Cognito configuration
 First and foremost, create a Cognito User Pool. Then open 'src/configs/aws-configs.js' and update the `aws_user_pools_id` and the `aws_user_pools_web_client_id` properties.
  
