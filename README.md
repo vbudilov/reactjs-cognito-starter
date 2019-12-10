@@ -1,5 +1,5 @@
-## ReactJS + Cognito + AntD QuickStart
-Use this project to quickly get started with ReactJS + Cognito.
+## ReactJS + Amazon Cognito + Amazon Amplify Framework Starter Project
+Use this project to quickly get started with ReactJS + Amazon Cognito.
 
 ## Update the Cognito configuration
 First and foremost, create a Cognito User Pool. Then open 'src/configs/aws-configs.js' and update the `aws_user_pools_id` and the `aws_user_pools_web_client_id` properties.
@@ -18,22 +18,21 @@ const awsConfig = {
 export default awsConfig
 ```
 
-## How to test locally and build for PRD deployment
+## Build the project and run it locally (the default url is 'http://localhost:3000')
 
-In the project directory, you can run:
+### yarn install && yarn start
 
-### `npm start`
+## Build for PRD
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### yarn build
 
-### `npm run build`
+## Screenshots
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<img src="homepage.png"
+     style="float: left; margin: 20px;" />
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+<img src="login.png"
+     style="float: left; margin: 20px;" />
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
+<img src="password-reset.png"
+     style="float: left; margin: 20px;" />
