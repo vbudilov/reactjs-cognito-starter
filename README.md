@@ -28,11 +28,11 @@ export default awsConfig
 
 ## Screenshots
 
-<img src="homepage.png"
+<img src="public/img/homepage.png"
      style="float: left; margin: 20px;" />
 
-<img src="login.png"
+<img src="public/img/login.png"
      style="float: left; margin: 20px;" />
 
-<img src="password-reset.png"
+<img src="public/img/password-reset.png"
      style="float: left; margin: 20px;" />
