@@ -2,6 +2,7 @@ ReactJS + [Amazon Cognito](https://aws.amazon.com/cognito/) + [Amazon Amplify Fr
 ===================================================
 
 ### Author: Vladimir Budilov
+* [YouTube](https://www.youtube.com/channel/UCBl-ENwdTlUsLY05yGgXyxw)
 * [LinkedIn](https://www.linkedin.com/in/vbudilov/)
 * [Medium](https://medium.com/@budilov)
 
