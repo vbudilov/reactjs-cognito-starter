@@ -1,0 +1,668 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree"
+      },
+      "BudilovUsersDDBTable": {
+        "id": "BudilovUsersDDBTable",
+        "path": "BudilovUsersDDBTable",
+        "children": {
+          "SecretWitUsers": {
+            "id": "SecretWitUsers",
+            "path": "BudilovUsersDDBTable/SecretWitUsers",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovUsersDDBTable/SecretWitUsers/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "userId",
+                        "keyType": "HASH"
+                      },
+                      {
+                        "attributeName": "sortKey",
+                        "keyType": "RANGE"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "userId",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "sortKey",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    },
+                    "tableName": "SecretWitUsers"
+                  }
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "BudilovUsersDDBTable/SecretWitUsers/ScalingRole"
+              }
+            }
+          },
+          "usersTable": {
+            "id": "usersTable",
+            "path": "BudilovUsersDDBTable/usersTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovUsersDDBTable/usersTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "SecretWitUsers2319B3AA"
+                    },
+                    "allowedPattern": ".*",
+                    "description": "usersTable",
+                    "name": "usersTable",
+                    "tier": "Standard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "BudilovCognitoLambdaStack": {
+        "id": "BudilovCognitoLambdaStack",
+        "path": "BudilovCognitoLambdaStack",
+        "children": {
+          "SecretWitCognitoToDDB": {
+            "id": "SecretWitCognitoToDDB",
+            "path": "BudilovCognitoLambdaStack/SecretWitCognitoToDDB",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovCognitoLambdaStack/SecretWitCognitoToDDB/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonDynamoDBFullAccess"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/CloudWatchLogsFullAccess"
+                          ]
+                        ]
+                      }
+                    ],
+                    "roleName": "SecretWitCognitoToDynamoDBRole"
+                  }
+                }
+              }
+            }
+          },
+          "copyUserToDynamoDBLambda": {
+            "id": "copyUserToDynamoDBLambda",
+            "path": "BudilovCognitoLambdaStack/copyUserToDynamoDBLambda",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovCognitoLambdaStack/copyUserToDynamoDBLambda/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "const aws = require('aws-sdk');\nconst ddb = new aws.DynamoDB({apiVersion: '2012-10-08'});\n\n/**\n * @author Vladimir Budilov\n *\n * Upon Cognito SignUp, a user is added to the DDB table\n *\n * Cognito event:\n * https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-lambda-trigger-examples.html#aws-lambda-triggers-post-confirmation-example\n *\n * Writing to DDB:\n * https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-table-read-write.html\n *\n * Sample input:\n *\n {\n    version:'1',\n    region:'us-east-1',\n    userPoolId:'us-east-1_9xasdfasdf3A',\n    userName:'budilov@domain.com',\n    callerContext:{\n       awsSdkVersion:'aws-sdk-unknown-unknown',\n       clientId:'1asdfasdfasdfasdf3hjjgp'\n    },\n    triggerSource:'PostConfirmation_ConfirmSignUp',\n    request: {\n    userAttributes: {\n      sub: '517cd3b9-4e99-4135-bccf-0300f42a96fb',\n      'cognito:user_status': 'CONFIRMED',\n      email_verified: 'true',\n      'cognito:email_alias': 'budilov@gmail.com',\n      email: 'budilov@gmail.com'\n    }\n  },\n    response:{\n    }\n }\n * @param event\n * @param context\n */\nexports.handler = async (event, context) => {\n    console.log(event);\n\n    const date = new Date();\n\n    const tableName = process.env.TABLE_NAME;\n    const region = process.env.REGION;\n    const partitionId = process.env.PARTITION_ID;\n    const sortKey = process.env.SORT_KEY;\n\n    console.log(`table=${tableName} -- region=${region}`);\n\n    aws.config.update({region});\n\n    if (!event.request.userAttributes.sub) {\n        // Nothing to do, the user's email ID is unknown\n        console.log(\"Error: Nothing was written to DDB or SQS\");\n        return context.done(null, event);\n    }\n\n    // -- Write data to DDB\n    // If the required parameters are present, proceed\n    let ddbParams = {\n        TableName: tableName,\n        Item: {\n            'email': {S: event.request.userAttributes.email},\n            'createdDate': {S: date.toISOString()},\n            'firstLogin': {BOOL: true}\n        }\n    };\n\n    ddbParams.Item[partitionId] = {S: event.request.userAttributes.sub};\n    ddbParams.Item[sortKey] = {S: \"user\"};\n\n    console.log(\"ddbParams: \" + ddbParams);\n\n    // Call DynamoDB\n    try {\n        ddbResult = await ddb.putItem(ddbParams).promise();\n        console.log(\"Success\");\n    } catch (err) {\n        console.log(\"Error\", err);\n    }\n\n    console.log(\"Success: Everything executed correctly\");\n    context.done(null, event);\n};"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "SecretWitCognitoToDDB32311C26",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs12.x",
+                    "environment": {
+                      "variables": {
+                        "PARTITION_ID": "userId",
+                        "SORT_KEY": "sortKey",
+                        "REGION": "us-east-1",
+                        "TABLE_NAME": "SecretWitUsers"
+                      }
+                    },
+                    "functionName": "SecretWitCognitoToDynamoDBLambda"
+                  }
+                }
+              },
+              "PostConfirmationCognito": {
+                "id": "PostConfirmationCognito",
+                "path": "BudilovCognitoLambdaStack/copyUserToDynamoDBLambda/PostConfirmationCognito",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": [
+                        "copyUserToDynamoDBLambdaC5ADE641",
+                        "Arn"
+                      ]
+                    },
+                    "principal": "cognito-idp.amazonaws.com"
+                  }
+                }
+              }
+            }
+          },
+          "SecretWitCognitoUpdate": {
+            "id": "SecretWitCognitoUpdate",
+            "path": "BudilovCognitoLambdaStack/SecretWitCognitoUpdate",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovCognitoLambdaStack/SecretWitCognitoUpdate/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonCognitoPowerUser"
+                          ]
+                        ]
+                      }
+                    ],
+                    "roleName": "SecretWitCognitoUpdateRole"
+                  }
+                }
+              }
+            }
+          },
+          "autoConfirmFunction": {
+            "id": "autoConfirmFunction",
+            "path": "BudilovCognitoLambdaStack/autoConfirmFunction",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovCognitoLambdaStack/autoConfirmFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "'use strict';\n\nmodule.exports.confirm = (event, context, callback) => {\n\n    console.log('Received event:', JSON.stringify(event, null, 2));\n\n    const modifiedEvent = event;\n\n    // check that we're acting on the right trigger\n    if (event.triggerSource === \"PreSignUp_SignUp\") {\n\n        // auto confirm the user\n        modifiedEvent.response.autoConfirmUser = true;\n\n        // Set the email as verified if it is in the request\n        modifiedEvent.response.autoVerifyEmail = true;\n\n        callback(null, modifiedEvent);\n        return\n    }\n\n    // Throw an error if invoked from the wrong trigger\n    callback(`Misconfigured Cognito Trigger ${event.triggerSource}`)\n};"
+                    },
+                    "handler": "index.confirm",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "SecretWitCognitoUpdate6E1AFC66",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs12.x",
+                    "functionName": "SecretWitCognitoAutoConfirmUser"
+                  }
+                }
+              },
+              "PreSignUpCognito": {
+                "id": "PreSignUpCognito",
+                "path": "BudilovCognitoLambdaStack/autoConfirmFunction/PreSignUpCognito",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": [
+                        "autoConfirmFunction43DC0E74",
+                        "Arn"
+                      ]
+                    },
+                    "principal": "cognito-idp.amazonaws.com"
+                  }
+                }
+              }
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "BudilovCognitoLambdaStack/Exports",
+            "children": {
+              "Output{\"Fn::GetAtt\":[\"copyUserToDynamoDBLambdaC5ADE641\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"copyUserToDynamoDBLambdaC5ADE641\",\"Arn\"]}",
+                "path": "BudilovCognitoLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"copyUserToDynamoDBLambdaC5ADE641\",\"Arn\"]}"
+              },
+              "Output{\"Fn::GetAtt\":[\"autoConfirmFunction43DC0E74\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"autoConfirmFunction43DC0E74\",\"Arn\"]}",
+                "path": "BudilovCognitoLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"autoConfirmFunction43DC0E74\",\"Arn\"]}"
+              }
+            }
+          }
+        }
+      },
+      "BudilovCognitoStack": {
+        "id": "BudilovCognitoStack",
+        "path": "BudilovCognitoStack",
+        "children": {
+          "SecretWitPool": {
+            "id": "SecretWitPool",
+            "path": "BudilovCognitoStack/SecretWitPool",
+            "children": {
+              "smsRole": {
+                "id": "smsRole",
+                "path": "BudilovCognitoStack/SecretWitPool/smsRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "BudilovCognitoStack/SecretWitPool/smsRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Condition": {
+                                "StringEquals": {
+                                  "sts:ExternalId": "BudilovCognitoStackSecretWitPoolAAD066A4"
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "cognito-idp.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policies": [
+                          {
+                            "policyName": "sns-publish",
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sns:Publish",
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovCognitoStack/SecretWitPool/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Cognito::UserPool",
+                  "aws:cdk:cloudformation:props": {
+                    "adminCreateUserConfig": {
+                      "allowAdminCreateUserOnly": false
+                    },
+                    "autoVerifiedAttributes": [
+                      "email"
+                    ],
+                    "emailVerificationMessage": "Hello {username}, Your verification code is {####}",
+                    "emailVerificationSubject": "Verify your new account",
+                    "lambdaConfig": {
+                      "postConfirmation": {
+                        "Fn::ImportValue": "BudilovCognitoLambdaStack:ExportsOutputFnGetAttcopyUserToDynamoDBLambdaC5ADE641Arn314C8B0C"
+                      },
+                      "preSignUp": {
+                        "Fn::ImportValue": "BudilovCognitoLambdaStack:ExportsOutputFnGetAttautoConfirmFunction43DC0E74ArnBBC2691A"
+                      }
+                    },
+                    "policies": {
+                      "passwordPolicy": {
+                        "minimumLength": 6,
+                        "requireLowercase": false,
+                        "requireUppercase": false,
+                        "requireNumbers": false,
+                        "requireSymbols": false
+                      }
+                    },
+                    "smsConfiguration": {
+                      "externalId": "BudilovCognitoStackSecretWitPoolAAD066A4",
+                      "snsCallerArn": {
+                        "Fn::GetAtt": [
+                          "SecretWitPoolsmsRoleC86E39C0",
+                          "Arn"
+                        ]
+                      }
+                    },
+                    "smsVerificationMessage": "The verification code to your new account is {####}",
+                    "usernameAttributes": [
+                      "email"
+                    ],
+                    "userPoolName": "SecretWit",
+                    "verificationMessageTemplate": {
+                      "defaultEmailOption": "CONFIRM_WITH_CODE",
+                      "emailMessage": "Hello {username}, Your verification code is {####}",
+                      "emailSubject": "Verify your new account",
+                      "smsMessage": "The verification code to your new account is {####}"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "SecretWitPoolClient": {
+            "id": "SecretWitPoolClient",
+            "path": "BudilovCognitoStack/SecretWitPoolClient",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovCognitoStack/SecretWitPoolClient/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Cognito::UserPoolClient",
+                  "aws:cdk:cloudformation:props": {
+                    "userPoolId": {
+                      "Ref": "SecretWitPool94B33D66"
+                    },
+                    "clientName": "webClient",
+                    "generateSecret": false
+                  }
+                }
+              }
+            }
+          },
+          "cognitoPoolIdSecret": {
+            "id": "cognitoPoolIdSecret",
+            "path": "BudilovCognitoStack/cognitoPoolIdSecret",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovCognitoStack/cognitoPoolIdSecret/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "SecretWitPool94B33D66"
+                    },
+                    "allowedPattern": ".*",
+                    "description": "cognitoPoolIdSecret",
+                    "name": "cognitoPoolIdSecret",
+                    "tier": "Standard"
+                  }
+                }
+              }
+            }
+          },
+          "cognitoPoolClientIdSecret": {
+            "id": "cognitoPoolClientIdSecret",
+            "path": "BudilovCognitoStack/cognitoPoolClientIdSecret",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "BudilovCognitoStack/cognitoPoolClientIdSecret/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "SecretWitPoolClient5E8D82FE"
+                    },
+                    "allowedPattern": ".*",
+                    "description": "cognitoPoolClientId",
+                    "name": "cognitoPoolClientId",
+                    "tier": "Standard"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SPAStack": {
+        "id": "SPAStack",
+        "path": "SPAStack",
+        "children": {
+          "SecretWitCertificate": {
+            "id": "SecretWitCertificate",
+            "path": "SPAStack/SecretWitCertificate",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SPAStack/SecretWitCertificate/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CertificateManager::Certificate",
+                  "aws:cdk:cloudformation:props": {
+                    "domainName": "secretwit.com",
+                    "domainValidationOptions": [
+                      {
+                        "domainName": "secretwit.com",
+                        "validationDomain": "secretwit.com"
+                      },
+                      {
+                        "domainName": "*.secretwit.com",
+                        "validationDomain": "secretwit.com"
+                      }
+                    ],
+                    "subjectAlternativeNames": [
+                      "*.secretwit.com"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "SecretWitBucket": {
+            "id": "SecretWitBucket",
+            "path": "SPAStack/SecretWitBucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SPAStack/SecretWitBucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "secretwit.website",
+                    "corsConfiguration": {
+                      "corsRules": [
+                        {
+                          "allowedMethods": [
+                            "GET",
+                            "HEAD"
+                          ],
+                          "allowedOrigins": [
+                            "*.secretwit.com",
+                            "www.secretwit.com"
+                          ]
+                        }
+                      ]
+                    },
+                    "websiteConfiguration": {
+                      "indexDocument": "index.html",
+                      "errorDocument": "index.html"
+                    }
+                  }
+                }
+              },
+              "Notifications": {
+                "id": "Notifications",
+                "path": "SPAStack/SecretWitBucket/Notifications"
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "SPAStack/SecretWitBucket/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SPAStack/SecretWitBucket/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "bucket": {
+                          "Ref": "SecretWitBucket235C6680"
+                        },
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "s3:GetObject",
+                              "Effect": "Allow",
+                              "Principal": "*",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "SecretWitBucket235C6680",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "SecretWitCloudFront": {
+            "id": "SecretWitCloudFront",
+            "path": "SPAStack/SecretWitCloudFront",
+            "children": {
+              "CFDistribution": {
+                "id": "CFDistribution",
+                "path": "SPAStack/SecretWitCloudFront/CFDistribution",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                  "aws:cdk:cloudformation:props": {
+                    "distributionConfig": {
+                      "enabled": true,
+                      "defaultRootObject": "index.html",
+                      "httpVersion": "http2",
+                      "priceClass": "PriceClass_100",
+                      "ipv6Enabled": true,
+                      "customErrorResponses": [
+                        {
+                          "errorCode": 403,
+                          "responseCode": 200,
+                          "responsePagePath": "/index.html"
+                        }
+                      ],
+                      "origins": [
+                        {
+                          "id": "origin1",
+                          "domainName": {
+                            "Fn::GetAtt": [
+                              "SecretWitBucket235C6680",
+                              "RegionalDomainName"
+                            ]
+                          },
+                          "s3OriginConfig": {}
+                        }
+                      ],
+                      "defaultCacheBehavior": {
+                        "allowedMethods": [
+                          "DELETE",
+                          "GET",
+                          "HEAD",
+                          "OPTIONS",
+                          "PATCH",
+                          "POST",
+                          "PUT"
+                        ],
+                        "cachedMethods": [
+                          "GET",
+                          "HEAD"
+                        ],
+                        "compress": true,
+                        "forwardedValues": {
+                          "queryString": false,
+                          "cookies": {
+                            "forward": "none"
+                          }
+                        },
+                        "targetOriginId": "origin1",
+                        "viewerProtocolPolicy": "redirect-to-https"
+                      },
+                      "aliases": [
+                        "secretwit.com",
+                        "*.secretwit.com"
+                      ],
+                      "viewerCertificate": {
+                        "acmCertificateArn": {
+                          "Ref": "SecretWitCertificateBAD7857E"
+                        },
+                        "sslSupportMethod": "sni-only",
+                        "minimumProtocolVersion": "TLSv1"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,452 @@
+{
+  "version": "1.33.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "BudilovUsersDDBTable": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "BudilovUsersDDBTable.template.json"
+      },
+      "metadata": {
+        "/BudilovUsersDDBTable/SecretWitUsers": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": "SecretWitUsers",
+            "trace": [
+              "ConstructNode.addMetadata (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/construct-compat.js:306:62)",
+              "new Table (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-dynamodb/lib/table.js:240:23)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovUsersDDBTable/SecretWitUsers/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitUsers2319B3AA",
+            "trace": [
+              "new Table (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-dynamodb/lib/table.js:222:22)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovUsersDDBTable/usersTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "usersTable12EF4ADD",
+            "trace": [
+              "new StringParameter (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-ssm/lib/parameter.js:98:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ]
+      }
+    },
+    "BudilovCognitoLambdaStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "BudilovCognitoLambdaStack.template.json"
+      },
+      "metadata": {
+        "/BudilovCognitoLambdaStack/SecretWitCognitoToDDB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitCognitoToDDB32311C26",
+            "trace": [
+              "new Role (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-iam/lib/role.js:41:22)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoLambdaStack/copyUserToDynamoDBLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "copyUserToDynamoDBLambdaC5ADE641",
+            "trace": [
+              "new Function (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-lambda/lib/function.js:72:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoLambdaStack/copyUserToDynamoDBLambda/PostConfirmationCognito": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "copyUserToDynamoDBLambdaPostConfirmationCognito2C554ABF",
+            "trace": [
+              "Function.addPermission (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-lambda/lib/function-base.js:23:9)",
+              "UserPool.addLambdaPermission (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cognito/lib/user-pool.js:205:12)",
+              "new UserPool (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cognito/lib/user-pool.js:107:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoLambdaStack/SecretWitCognitoUpdate/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitCognitoUpdate6E1AFC66",
+            "trace": [
+              "new Role (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-iam/lib/role.js:41:22)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoLambdaStack/autoConfirmFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "autoConfirmFunction43DC0E74",
+            "trace": [
+              "new Function (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-lambda/lib/function.js:72:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoLambdaStack/autoConfirmFunction/PreSignUpCognito": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "autoConfirmFunctionPreSignUpCognito11E59816",
+            "trace": [
+              "Function.addPermission (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-lambda/lib/function-base.js:23:9)",
+              "UserPool.addLambdaPermission (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cognito/lib/user-pool.js:205:12)",
+              "new UserPool (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cognito/lib/user-pool.js:107:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"copyUserToDynamoDBLambdaC5ADE641\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttcopyUserToDynamoDBLambdaC5ADE641Arn314C8B0C",
+            "trace": [
+              "createImportValue (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/private/refs.js:153:9)",
+              "resolveValue (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/private/refs.js:85:12)",
+              "Object.resolveReferences (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/private/refs.js:26:30)",
+              "Object.prepareApp (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/private/prepare-app.js:24:16)",
+              "App.prepare (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/app.js:81:23)",
+              "App.onPrepare (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/construct-compat.js:71:14)",
+              "Node.prepare (/tmp/jsii-kernel-BBpv5V/node_modules/constructs/lib/construct.js:365:20)",
+              "Node.synthesize (/tmp/jsii-kernel-BBpv5V/node_modules/constructs/lib/construct.js:323:14)",
+              "Function.synth (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/construct-compat.js:170:26)",
+              "App.synth (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/app.js:72:59)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7680:51",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7680:25",
+              "Kernel._ensureSync (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8289:20)",
+              "Kernel.invoke (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7679:26)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"autoConfirmFunction43DC0E74\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttautoConfirmFunction43DC0E74ArnBBC2691A",
+            "trace": [
+              "createImportValue (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/private/refs.js:153:9)",
+              "resolveValue (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/private/refs.js:85:12)",
+              "Object.resolveReferences (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/private/refs.js:26:30)",
+              "Object.prepareApp (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/private/prepare-app.js:24:16)",
+              "App.prepare (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/app.js:81:23)",
+              "App.onPrepare (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/construct-compat.js:71:14)",
+              "Node.prepare (/tmp/jsii-kernel-BBpv5V/node_modules/constructs/lib/construct.js:365:20)",
+              "Node.synthesize (/tmp/jsii-kernel-BBpv5V/node_modules/constructs/lib/construct.js:323:14)",
+              "Function.synth (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/construct-compat.js:170:26)",
+              "App.synth (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/core/lib/app.js:72:59)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7680:51",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7680:25",
+              "Kernel._ensureSync (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8289:20)",
+              "Kernel.invoke (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7679:26)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ]
+      }
+    },
+    "BudilovCognitoStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "BudilovCognitoStack.template.json"
+      },
+      "dependencies": [
+        "BudilovCognitoLambdaStack"
+      ],
+      "metadata": {
+        "/BudilovCognitoStack/SecretWitPool/smsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitPoolsmsRoleC86E39C0",
+            "trace": [
+              "new Role (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-iam/lib/role.js:41:22)",
+              "UserPool.smsConfiguration (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cognito/lib/user-pool.js:309:83)",
+              "new UserPool (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cognito/lib/user-pool.js:137:36)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoStack/SecretWitPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitPool94B33D66",
+            "trace": [
+              "new UserPool (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cognito/lib/user-pool.js:131:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoStack/SecretWitPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitPoolClient5E8D82FE",
+            "trace": [
+              "new UserPoolClient (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cognito/lib/user-pool-client.js:61:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoStack/cognitoPoolIdSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cognitoPoolIdSecret3F8350DC",
+            "trace": [
+              "new StringParameter (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-ssm/lib/parameter.js:98:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/BudilovCognitoStack/cognitoPoolClientIdSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cognitoPoolClientIdSecretF7886D2A",
+            "trace": [
+              "new StringParameter (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-ssm/lib/parameter.js:98:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ]
+      }
+    },
+    "SPAStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "SPAStack.template.json"
+      },
+      "metadata": {
+        "/SPAStack/SecretWitCertificate/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitCertificateBAD7857E",
+            "trace": [
+              "new Certificate (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-certificatemanager/lib/certificate.js:27:22)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/SPAStack/SecretWitBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitBucket235C6680",
+            "trace": [
+              "new Bucket (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-s3/lib/bucket.js:366:26)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/SPAStack/SecretWitBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitBucketPolicyDD62A02B",
+            "trace": [
+              "new BucketPolicy (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-s3/lib/bucket-policy.js:21:9)",
+              "Bucket.addToResourcePolicy (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-s3/lib/bucket.js:125:27)",
+              "Function.addToPrincipalOrResource (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-iam/lib/grant.js:43:26)",
+              "Bucket.grantPublicAccess (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-s3/lib/bucket.js:253:26)",
+              "new Bucket (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-s3/lib/bucket.js:408:18)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ],
+        "/SPAStack/SecretWitCloudFront/CFDistribution": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SecretWitCloudFrontCFDistribution66317D44",
+            "trace": [
+              "new CloudFrontWebDistribution (/tmp/jsii-kernel-BBpv5V/node_modules/@aws-cdk/aws-cloudfront/lib/web_distribution.js:346:30)",
+              "/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:49",
+              "Kernel._wrapSandboxCode (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:8313:20)",
+              "Kernel._create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7853:26)",
+              "Kernel.create (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7600:21)",
+              "KernelHost.processRequest (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7388:28)",
+              "KernelHost.run (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7328:14)",
+              "Immediate._onImmediate (/tmp/jsii-java-runtime12902653959333259452/jsii-runtime.js:7331:37)",
+              "processImmediate (internal/timers.js:456:21)"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "runtime": {
+    "libraries": {
+      "@aws-cdk/cloud-assembly-schema": "1.33.1",
+      "@aws-cdk/cx-api": "1.33.1",
+      "@aws-cdk/core": "1.33.1",
+      "@aws-cdk/region-info": "1.33.1",
+      "@aws-cdk/aws-iam": "1.33.1",
+      "@aws-cdk/aws-autoscaling-common": "1.33.1",
+      "@aws-cdk/aws-cloudwatch": "1.33.1",
+      "@aws-cdk/aws-applicationautoscaling": "1.33.1",
+      "@aws-cdk/aws-logs": "1.33.1",
+      "@aws-cdk/aws-events": "1.33.1",
+      "@aws-cdk/aws-kms": "1.33.1",
+      "@aws-cdk/aws-s3": "1.33.1",
+      "@aws-cdk/aws-ssm": "1.33.1",
+      "@aws-cdk/aws-ec2": "1.33.1",
+      "@aws-cdk/assets": "1.33.1",
+      "@aws-cdk/aws-s3-assets": "1.33.1",
+      "@aws-cdk/aws-sqs": "1.33.1",
+      "@aws-cdk/aws-lambda": "1.33.1",
+      "@aws-cdk/aws-sns": "1.33.1",
+      "@aws-cdk/aws-cloudformation": "1.33.1",
+      "@aws-cdk/custom-resources": "1.33.1",
+      "@aws-cdk/aws-dynamodb": "1.33.1",
+      "@aws-cdk/aws-cognito": "1.33.1",
+      "@aws-cdk/aws-route53": "1.33.1",
+      "@aws-cdk/aws-certificatemanager": "1.33.1",
+      "@aws-cdk/aws-cloudfront": "1.33.1",
+      "jsii-runtime": "Java/11.0.7"
+    }
+  }
+}

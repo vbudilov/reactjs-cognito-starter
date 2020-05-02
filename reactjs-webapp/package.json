@@ -1,0 +1,38 @@
+{
+  "name": "bn-web-app",
+  "author": "Vladimir Budilov",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@aws-amplify/core": "^1.1.2",
+    "antd": "3.23.3",
+    "aws-amplify": "^1.1.40",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-player": "^1.13.0",
+    "react-router": "5.0.1",
+    "react-router-dom": "5.0.1",
+    "react-scripts": "3.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start --history-api-fallback",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "Resources": {
+    "SecretWitUsers2319B3AA": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "KeySchema": [
+          {
+            "AttributeName": "userId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "sortKey",
+            "KeyType": "RANGE"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "userId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "sortKey",
+            "AttributeType": "S"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        },
+        "TableName": "SecretWitUsers"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "BudilovUsersDDBTable/SecretWitUsers/Resource"
+      }
+    },
+    "usersTable12EF4ADD": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Type": "String",
+        "Value": {
+          "Ref": "SecretWitUsers2319B3AA"
+        },
+        "AllowedPattern": ".*",
+        "Description": "usersTable",
+        "Name": "usersTable",
+        "Tier": "Standard"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BudilovUsersDDBTable/usersTable/Resource"
+      }
+    }
+  }
+}

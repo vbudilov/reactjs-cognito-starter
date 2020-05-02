@@ -1,0 +1,13 @@
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/elasticsearch/ElasticsearchStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/web/SPAStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/util/SSM.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/containers/EcrStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/cognito/CognitoStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/elasticsearch/ElasticsearchIamStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/cognito/CognitoLambdaStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/S3PublicBucketStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/ddb/DDBUserTableStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/SecretWitApp.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/containers/EksIamStack.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/util/Properties.java
+/opt/dev/ideas/secretwit/cdk/src/main/java/com/budilov/cdk/ddb/DDBGamesTableStack.java

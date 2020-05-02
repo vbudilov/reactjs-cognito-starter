@@ -1,0 +1,196 @@
+{
+  "Resources": {
+    "SecretWitCognitoToDDB32311C26": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonDynamoDBFullAccess"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/CloudWatchLogsFullAccess"
+              ]
+            ]
+          }
+        ],
+        "RoleName": "SecretWitCognitoToDynamoDBRole"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BudilovCognitoLambdaStack/SecretWitCognitoToDDB/Resource"
+      }
+    },
+    "copyUserToDynamoDBLambdaC5ADE641": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "const aws = require('aws-sdk');\nconst ddb = new aws.DynamoDB({apiVersion: '2012-10-08'});\n\n/**\n * @author Vladimir Budilov\n *\n * Upon Cognito SignUp, a user is added to the DDB table\n *\n * Cognito event:\n * https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-lambda-trigger-examples.html#aws-lambda-triggers-post-confirmation-example\n *\n * Writing to DDB:\n * https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-table-read-write.html\n *\n * Sample input:\n *\n {\n    version:'1',\n    region:'us-east-1',\n    userPoolId:'us-east-1_9xasdfasdf3A',\n    userName:'budilov@domain.com',\n    callerContext:{\n       awsSdkVersion:'aws-sdk-unknown-unknown',\n       clientId:'1asdfasdfasdfasdf3hjjgp'\n    },\n    triggerSource:'PostConfirmation_ConfirmSignUp',\n    request: {\n    userAttributes: {\n      sub: '517cd3b9-4e99-4135-bccf-0300f42a96fb',\n      'cognito:user_status': 'CONFIRMED',\n      email_verified: 'true',\n      'cognito:email_alias': 'budilov@gmail.com',\n      email: 'budilov@gmail.com'\n    }\n  },\n    response:{\n    }\n }\n * @param event\n * @param context\n */\nexports.handler = async (event, context) => {\n    console.log(event);\n\n    const date = new Date();\n\n    const tableName = process.env.TABLE_NAME;\n    const region = process.env.REGION;\n    const partitionId = process.env.PARTITION_ID;\n    const sortKey = process.env.SORT_KEY;\n\n    console.log(`table=${tableName} -- region=${region}`);\n\n    aws.config.update({region});\n\n    if (!event.request.userAttributes.sub) {\n        // Nothing to do, the user's email ID is unknown\n        console.log(\"Error: Nothing was written to DDB or SQS\");\n        return context.done(null, event);\n    }\n\n    // -- Write data to DDB\n    // If the required parameters are present, proceed\n    let ddbParams = {\n        TableName: tableName,\n        Item: {\n            'email': {S: event.request.userAttributes.email},\n            'createdDate': {S: date.toISOString()},\n            'firstLogin': {BOOL: true}\n        }\n    };\n\n    ddbParams.Item[partitionId] = {S: event.request.userAttributes.sub};\n    ddbParams.Item[sortKey] = {S: \"user\"};\n\n    console.log(\"ddbParams: \" + ddbParams);\n\n    // Call DynamoDB\n    try {\n        ddbResult = await ddb.putItem(ddbParams).promise();\n        console.log(\"Success\");\n    } catch (err) {\n        console.log(\"Error\", err);\n    }\n\n    console.log(\"Success: Everything executed correctly\");\n    context.done(null, event);\n};"
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "SecretWitCognitoToDDB32311C26",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Environment": {
+          "Variables": {
+            "PARTITION_ID": "userId",
+            "SORT_KEY": "sortKey",
+            "REGION": "us-east-1",
+            "TABLE_NAME": "SecretWitUsers"
+          }
+        },
+        "FunctionName": "SecretWitCognitoToDynamoDBLambda"
+      },
+      "DependsOn": [
+        "SecretWitCognitoToDDB32311C26"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BudilovCognitoLambdaStack/copyUserToDynamoDBLambda/Resource"
+      }
+    },
+    "copyUserToDynamoDBLambdaPostConfirmationCognito2C554ABF": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "copyUserToDynamoDBLambdaC5ADE641",
+            "Arn"
+          ]
+        },
+        "Principal": "cognito-idp.amazonaws.com"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BudilovCognitoLambdaStack/copyUserToDynamoDBLambda/PostConfirmationCognito"
+      }
+    },
+    "SecretWitCognitoUpdate6E1AFC66": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonCognitoPowerUser"
+              ]
+            ]
+          }
+        ],
+        "RoleName": "SecretWitCognitoUpdateRole"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BudilovCognitoLambdaStack/SecretWitCognitoUpdate/Resource"
+      }
+    },
+    "autoConfirmFunction43DC0E74": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "'use strict';\n\nmodule.exports.confirm = (event, context, callback) => {\n\n    console.log('Received event:', JSON.stringify(event, null, 2));\n\n    const modifiedEvent = event;\n\n    // check that we're acting on the right trigger\n    if (event.triggerSource === \"PreSignUp_SignUp\") {\n\n        // auto confirm the user\n        modifiedEvent.response.autoConfirmUser = true;\n\n        // Set the email as verified if it is in the request\n        modifiedEvent.response.autoVerifyEmail = true;\n\n        callback(null, modifiedEvent);\n        return\n    }\n\n    // Throw an error if invoked from the wrong trigger\n    callback(`Misconfigured Cognito Trigger ${event.triggerSource}`)\n};"
+        },
+        "Handler": "index.confirm",
+        "Role": {
+          "Fn::GetAtt": [
+            "SecretWitCognitoUpdate6E1AFC66",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "FunctionName": "SecretWitCognitoAutoConfirmUser"
+      },
+      "DependsOn": [
+        "SecretWitCognitoUpdate6E1AFC66"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BudilovCognitoLambdaStack/autoConfirmFunction/Resource"
+      }
+    },
+    "autoConfirmFunctionPreSignUpCognito11E59816": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "autoConfirmFunction43DC0E74",
+            "Arn"
+          ]
+        },
+        "Principal": "cognito-idp.amazonaws.com"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BudilovCognitoLambdaStack/autoConfirmFunction/PreSignUpCognito"
+      }
+    }
+  },
+  "Outputs": {
+    "ExportsOutputFnGetAttcopyUserToDynamoDBLambdaC5ADE641Arn314C8B0C": {
+      "Value": {
+        "Fn::GetAtt": [
+          "copyUserToDynamoDBLambdaC5ADE641",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": "BudilovCognitoLambdaStack:ExportsOutputFnGetAttcopyUserToDynamoDBLambdaC5ADE641Arn314C8B0C"
+      }
+    },
+    "ExportsOutputFnGetAttautoConfirmFunction43DC0E74ArnBBC2691A": {
+      "Value": {
+        "Fn::GetAtt": [
+          "autoConfirmFunction43DC0E74",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": "BudilovCognitoLambdaStack:ExportsOutputFnGetAttautoConfirmFunction43DC0E74ArnBBC2691A"
+      }
+    }
+  }
+}

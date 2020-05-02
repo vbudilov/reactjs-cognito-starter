@@ -1,0 +1,7 @@
+com/budilov/cdk/util/Properties.class
+com/budilov/cdk/cognito/CognitoLambdaStack.class
+com/budilov/cdk/web/SPAStack.class
+com/budilov/cdk/BudilovApp.class
+com/budilov/cdk/util/SSM.class
+com/budilov/cdk/cognito/CognitoStack.class
+com/budilov/cdk/ddb/DDBUserTableStack.class

@@ -1,0 +1,159 @@
+{
+  "Resources": {
+    "SecretWitCertificateBAD7857E": {
+      "Type": "AWS::CertificateManager::Certificate",
+      "Properties": {
+        "DomainName": "secretwit.com",
+        "DomainValidationOptions": [
+          {
+            "DomainName": "secretwit.com",
+            "ValidationDomain": "secretwit.com"
+          },
+          {
+            "DomainName": "*.secretwit.com",
+            "ValidationDomain": "secretwit.com"
+          }
+        ],
+        "SubjectAlternativeNames": [
+          "*.secretwit.com"
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "SPAStack/SecretWitCertificate/Resource"
+      }
+    },
+    "SecretWitBucket235C6680": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "secretwit.website",
+        "CorsConfiguration": {
+          "CorsRules": [
+            {
+              "AllowedMethods": [
+                "GET",
+                "HEAD"
+              ],
+              "AllowedOrigins": [
+                "*.secretwit.com",
+                "www.secretwit.com"
+              ]
+            }
+          ]
+        },
+        "WebsiteConfiguration": {
+          "ErrorDocument": "index.html",
+          "IndexDocument": "index.html"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "SPAStack/SecretWitBucket/Resource"
+      }
+    },
+    "SecretWitBucketPolicyDD62A02B": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "SecretWitBucket235C6680"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "SecretWitBucket235C6680",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "SPAStack/SecretWitBucket/Policy/Resource"
+      }
+    },
+    "SecretWitCloudFrontCFDistribution66317D44": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "Aliases": [
+            "secretwit.com",
+            "*.secretwit.com"
+          ],
+          "CustomErrorResponses": [
+            {
+              "ErrorCode": 403,
+              "ResponseCode": 200,
+              "ResponsePagePath": "/index.html"
+            }
+          ],
+          "DefaultCacheBehavior": {
+            "AllowedMethods": [
+              "DELETE",
+              "GET",
+              "HEAD",
+              "OPTIONS",
+              "PATCH",
+              "POST",
+              "PUT"
+            ],
+            "CachedMethods": [
+              "GET",
+              "HEAD"
+            ],
+            "Compress": true,
+            "ForwardedValues": {
+              "Cookies": {
+                "Forward": "none"
+              },
+              "QueryString": false
+            },
+            "TargetOriginId": "origin1",
+            "ViewerProtocolPolicy": "redirect-to-https"
+          },
+          "DefaultRootObject": "index.html",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Origins": [
+            {
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "SecretWitBucket235C6680",
+                  "RegionalDomainName"
+                ]
+              },
+              "Id": "origin1",
+              "S3OriginConfig": {}
+            }
+          ],
+          "PriceClass": "PriceClass_100",
+          "ViewerCertificate": {
+            "AcmCertificateArn": {
+              "Ref": "SecretWitCertificateBAD7857E"
+            },
+            "MinimumProtocolVersion": "TLSv1",
+            "SslSupportMethod": "sni-only"
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "SPAStack/SecretWitCloudFront/CFDistribution"
+      }
+    }
+  }
+}

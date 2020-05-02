@@ -1,0 +1,26 @@
+#This declares the pipeline stages
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+build:
+  stage: build
+  image: node:latest
+  script:
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      # Build folder
+      - build/
+    expire_in: 1 hour
+
+deploy:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  script:
+    - aws s3 cp ./build/ s3://$S3_BUCKET_NAME/ --recursive --include "*"
+    - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths "/*"

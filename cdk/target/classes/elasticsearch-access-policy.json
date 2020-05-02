@@ -1,0 +1,26 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::ACCOUNT_NAME_REPLACE_ME:role/ROLE_NAME_REPLACE_ME"
+      },
+      "Action": "es:*",
+      "Resource": "arn:aws:es:REGION_REPLACE_ME:ACCOUNT_NAME_REPLACE_ME:domain/ES_DOMAIN_NAME_REPLACE_ME/*"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": "es:*",
+      "Resource": "arn:aws:es:REGION_REPLACE_ME:ACCOUNT_NAME_REPLACE_ME:domain/ES_DOMAIN_NAME_REPLACE_ME/*",
+      "Condition": {
+        "IpAddress": {
+          "aws:SourceIp": "EXTERNAL_IP_ADDRESS_REPLACE_ME"
+        }
+      }
+    }
+  ]
+}
