@@ -6,7 +6,7 @@ ReactJS + [Amazon Cognito](https://aws.amazon.com/cognito/) + [Amazon Amplify Fr
 * [LinkedIn](https://www.linkedin.com/in/vbudilov/)
 * [Medium](https://medium.com/@budilov)
 
-Use this project to quickly get started with ReactJS + Amazon Cognito.
+Use this project to quickly get started with ReactJS + Amazon Cognito + CDK + GitLab CI/CD
 
 ### Update the Cognito configuration
 First and foremost, create a Cognito User Pool. Then open 'src/configs/aws-configs.js' and update the `aws_user_pools_id` and the `aws_user_pools_web_client_id` properties.
