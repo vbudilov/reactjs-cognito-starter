@@ -1,14 +1,16 @@
-import {Button, Form, Icon, Input, notification, Row} from 'antd';
-import React from 'react';
+import {Button, Form, Input, notification, Row} from 'antd';
+import React, {useEffect, useState} from 'react';
 import {Hub, Logger} from '@aws-amplify/core';
 import {AuthService} from "../../services/auth-service";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
 
-class RegisterConfirmForm extends React.Component {
+export function RegisterConfirmForm() {
 
-    logger = new Logger("RegisterConfirmForm");
+    const logger = new Logger("RegisterConfirmForm");
+    const history = useHistory();
 
-    styles = {
+    const styles = {
         loginForm: {
             "max-width": "300px"
         },
@@ -20,18 +22,25 @@ class RegisterConfirmForm extends React.Component {
         }
     };
 
-    constructor(props) {
-        super(props);
-        Hub.listen(AuthService.CHANNEL, this.onHubCapsule, 'MyListener');
-    }
+    const [errorMessage, setErrorMessage] = useState("");
+    const [userNotConfirmed, setUserNotConfirmed] = useState(false);
+
+    useEffect(() => {
+        Hub.listen(AuthService.CHANNEL, onHubCapsule, 'MyListener');
+
+        return function cleanup() {
+            logger.info("Removing HUB subscription to " + AuthService.CHANNEL);
+            Hub.remove(AuthService.CHANNEL, onHubCapsule);
+        };
+    });
 
     // Default handler for listening events
-    onHubCapsule = (capsule) => {
+    const onHubCapsule = (capsule) => {
         const {channel, payload} = capsule;
         if (channel === AuthService.CHANNEL &&
-            (AuthService.AUTH_EVENTS.REGISTER_CONFIRM )) {
+            (AuthService.AUTH_EVENTS.REGISTER_CONFIRM)) {
             if (!payload.success) {
-                this.setState({errorMessage: payload.message})
+                setErrorMessage(payload.message);
                 notification.open({
                     type: 'error',
                     message: 'Could not log in',
@@ -46,71 +55,68 @@ class RegisterConfirmForm extends React.Component {
                     description: 'You have confirmed your email. Now you can login',
                     duration: 15
                 });
-                this.props.history.push("/login")
+
+                history.push("/login")
             }
         }
     };
 
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                this.logger.info('Received values of form: ', values);
-                AuthService.confirmSignUp(values.username, values.code);
-            }
-        });
+    const onFinish = values => {
+        console.log('Success:', values);
+        AuthService.confirmSignUp(values.username, values.code);
     };
-    componentWillUnmount() {
-        this.logger.info("Removing HUB subscription to " + AuthService.CHANNEL);
-        Hub.remove(AuthService.CHANNEL, this.onHubCapsule);
-    }
 
-    render() {
-        const {getFieldDecorator} = this.props.form;
+    const onFinishFailed = errorInfo => {
+        console.log('Failed:', errorInfo);
+    };
 
-        return (
-            <div>
-                <Row style={{display: 'flex', justifyContent: 'center', margin: "15px"}}>
-                    Use the emailed code to confirm your email
-                </Row>
-                <Row>
-                    <Form onSubmit={this.handleSubmit} style={this.styles.loginForm}>
-                        <Form.Item>
-                            {getFieldDecorator('username', {
-                                rules: [{required: true, message: 'Please input your email!'}],
-                            })(
-                                <Input
-                                    prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                    placeholder="Email"
-                                />,
-                            )}
-                        </Form.Item>
-                        <Form.Item>
-                            {getFieldDecorator('code', {
-                                rules: [{required: true, message: 'Please input your code!'}],
-                            })(
-                                <Input
-                                    prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                    type="string"
-                                    placeholder="Code"
-                                />,
-                            )}
-                        </Form.Item>
-                        <Form.Item>
+    return <div>
+        <Row style={{display: 'flex', justifyContent: 'center', margin: "15px"}}>
+            Use the emailed code to confirm your email
+        </Row>
+        <Row>
+            <Form
+                name="basic"
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                style={styles.loginForm}>
+                <Form.Item
+                    name="username"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your email',
+                        }
+                    ]}>
+                    <Input
+                        prefix={<UserOutlined/>}
+                        placeholder="Email"
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="code"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your confirmation code!'
+                        }
+                    ]}>
 
-                            <Button type="primary" htmlType="submit" style={this.styles.loginFormButton}>
-                                Confirm Email
-                            </Button>
-                            Already confirmed? <Link to="login">Login</Link>
-                        </Form.Item>
-                    </Form>
-                </Row>
-            </div>
+                    <Input
+                        prefix={<LockOutlined/>}
+                        type="string"
+                        placeholder="Code"
+                    />
+                </Form.Item>
+                <Form.Item>
 
-        );
-    }
+                    <Button type="primary" htmlType="submit" style={styles.loginFormButton}>
+                        Confirm Email
+                    </Button>
+                    Already confirmed? <Link to="login">Login</Link>
+                </Form.Item>
+            </Form>
+        </Row>
+    </div>;
 
 }
-
-export const
-    WrappedRegisterConfirmForm = Form.create({name: 'normal_login'})(RegisterConfirmForm);

@@ -1,6 +1,7 @@
 import React from 'react';
-import {AutoComplete, Icon, Input} from 'antd';
+import {AutoComplete, Input} from 'antd';
 import {Logger} from '@aws-amplify/core';
+import {SearchOutlined} from "@ant-design/icons";
 
 const {Option, OptGroup} = AutoComplete;
 
@@ -100,7 +101,7 @@ export class SearchInputField extends React.Component {
                     placeholder="type here"
                     optionLabelProp="value"
                 >
-                    <Input suffix={<Icon type="search" className="certain-category-icon"/>}/>
+                    <Input suffix={<SearchOutlined className="certain-category-icon"/>}/>
                 </AutoComplete>
             </div>
         </div>)

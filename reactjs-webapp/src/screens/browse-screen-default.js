@@ -1,7 +1,7 @@
 import React from 'react';
 import {Icon, Tabs} from "antd";
-import {EpisodesSearchResult} from "./search/episodes-search-result";
-import {PodcastsSearchResult} from "./search/podcasts-search-result";
+import {EpisodesSearchResult} from "./secure-home/episodes-search-result";
+import {PodcastsSearchResult} from "./secure-home/podcasts-search-result";
 
 const TabPane = Tabs.TabPane;
 

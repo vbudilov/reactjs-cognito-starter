@@ -1,13 +1,11 @@
 import React from 'react';
-import {Col, Layout, Row} from "antd";
-import {WrappedLoginForm} from "./login-form";
+import {Col, Row} from "antd";
 import {Route} from "react-router";
-import {WrappedRegisterForm} from "./register-form";
-import {WrappedForgotPasswordEmailForm} from "./forgot-password-email-form";
-import {WrappedForgotPasswordEmailCodeForm} from "./forgot-password-email-code-form";
-import {WrappedRegisterConfirmForm} from "./register-confirm-form";
-
-const {Content} = Layout;
+import {RegisterForm} from "./register-form";
+import {ForgotPasswordEmailForm} from "./forgot-password-email-form";
+import {ForgotPasswordEmailCodeForm} from "./forgot-password-email-code-form";
+import {RegisterConfirmForm} from "./register-confirm-form";
+import {LoginForm} from "./login-form";
 
 export class AuthScreen extends React.Component {
 
@@ -17,12 +15,12 @@ export class AuthScreen extends React.Component {
                 <Col>
 
                     <Row>
-                        <Route path={"/login"} component={WrappedLoginForm}/>
-                        <Route path={"/register"} component={WrappedRegisterForm}/>
-                        <Route path={"/registerconfirm"} component={WrappedRegisterConfirmForm}/>
-                        <Route path={"/forgotpassword1"} component={WrappedForgotPasswordEmailForm}/>
-                        <Route path={"/forgotpassword2"} component={WrappedForgotPasswordEmailCodeForm}/>
-                        <Route path={"/forgotpassword2/:email"} component={WrappedForgotPasswordEmailCodeForm}/>
+                        <Route path={"/login"} component={LoginForm}/>
+                        <Route path={"/register"} component={RegisterForm}/>
+                        <Route path={"/registerconfirm"} component={RegisterConfirmForm}/>
+                        <Route path={"/forgotpassword1"} component={ForgotPasswordEmailForm}/>
+                        <Route path={"/forgotpassword2"} component={ForgotPasswordEmailCodeForm}/>
+                        <Route path={"/forgotpassword2/:email"} component={ForgotPasswordEmailCodeForm}/>
                     </Row>
                 </Col>
             </div>

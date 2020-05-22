@@ -1,12 +1,15 @@
-import {Button, Form, Icon, Input, notification, Row} from 'antd';
-import React from 'react';
-import {Link} from 'react-router-dom';
+import {Button, Form, Input, notification, Row} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Link, useHistory} from 'react-router-dom';
 import {Hub, Logger} from "@aws-amplify/core";
 import {AuthService} from "../../services/auth-service";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
 
-class ForgotPasswordEmailCodeForm extends React.Component {
-    logger = new Logger("ForgotPasswordEmailCodeForm");
-    styles = {
+export function ForgotPasswordEmailCodeForm() {
+    const logger = new Logger("ForgotPasswordEmailCodeForm");
+    const history = useHistory();
+
+    const styles = {
         loginForm: {
             "max-width": "300px"
         },
@@ -18,106 +21,114 @@ class ForgotPasswordEmailCodeForm extends React.Component {
         }
     };
 
-    constructor(props) {
-        super(props);
-        Hub.listen(AuthService.CHANNEL, this.onHubCapsule, 'MyListener');
-    }
+    const [errorMessage, setErrorMessage] = useState("");
+    const [userNotConfirmed, setUserNotConfirmed] = useState(false);
+
+    useEffect(() => {
+        Hub.listen(AuthService.CHANNEL, onHubCapsule, 'MyListener');
+        return function cleanup() {
+            logger.info("Removing HUB subscription to " + AuthService.CHANNEL);
+            Hub.remove(AuthService.CHANNEL, onHubCapsule);
+        };
+
+    })
 
     // Default handler for listening events
-    onHubCapsule = (capsule) => {
+    const onHubCapsule = (capsule) => {
         const {channel, payload} = capsule;
         if (channel === AuthService.CHANNEL &&
             payload.event === AuthService.AUTH_EVENTS.PASSWORD_RESET_2) {
-                this.logger.info(payload.message);
-                if (!payload.success) {
-                    this.setState({errorMessage: payload.message})
-                    notification.open({
-                        type: 'error',
-                        message: "Couldn't change your password",
-                        description: payload.message,
-                        duration: 15
-                    });
+            logger.info(payload.message);
+            if (!payload.success) {
+                setErrorMessage(payload.message)
+                notification.open({
+                    type: 'error',
+                    message: "Couldn't change your password",
+                    description: payload.message,
+                    duration: 15
+                });
 
-                } else {
-                    this.setState({errorMessage: null});
-                    AuthService.login(payload.username, payload.password);
-                }
+                // history.push("/login");
+                AuthService.login(payload.username, payload.password);
+
+            } else {
+                setErrorMessage(null);
+                history.push("/login")
+
+            }
         }
     };
-
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                this.logger.info('Received values of form: ', values);
-                AuthService.forgotPasswordSetNew(values.username, values.code, values.password)
-            }
-        });
+    const onFinish = values => {
+        logger.info('Received values of form: ', values);
+        AuthService.forgotPasswordSetNew(values.username, values.code, values.password)
     };
 
-    componentWillUnmount() {
-        this.logger.info("Removing HUB subscription to " + AuthService.CHANNEL);
-        Hub.remove(AuthService.CHANNEL, this.onHubCapsule);
-    }
+    const onFinishFailed = errorInfo => {
+        console.log('Failed:', errorInfo);
+    };
 
-    render() {
-        const {getFieldDecorator} = this.props.form;
-        return (
-            <div>
+    return <div>
 
-                <Row style={{display: 'flex', justifyContent: 'center'}}>
-                    Forgot Password (step 2)
-                </Row>
+        <Row style={{display: 'flex', justifyContent: 'center'}}>
+            Forgot Password (step 2)
+        </Row>
 
-                <Row>
-                    <Form onSubmit={this.handleSubmit} style={this.styles.loginForm}>
-                        <Form.Item>
-                            {getFieldDecorator('username', {
-                                rules: [{required: true, message: 'Please input your username!'}],
-                            })(
-                                <Input
-                                    prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                    type="email"
-                                    placeholder="Email"
-                                />,
-                            )}
-                        </Form.Item>
-                        <Form.Item>
-                            {getFieldDecorator('password', {
-                                rules: [{required: true, message: 'Please input your new Password!'}],
-                            })(
-                                <Input
-                                    prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                    type="password"
-                                    placeholder="New Password"
-                                />,
-                            )}
-                        </Form.Item>
-                        <Form.Item>
-                            {getFieldDecorator('code', {
-                                rules: [{required: true, message: 'Please input your code!'}],
-                            })(
-                                <Input
-                                    prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                    type="string"
-                                    placeholder="Code"
-                                />,
-                            )}
-                        </Form.Item>
-                        <Form.Item>
+        <Row>
+            <Form style={styles.loginForm}
 
-                            <Button type="primary" htmlType="submit" style={this.styles.loginFormButton}>
-                                Change password
-                            </Button>
-                            Or try to <Link to="login">login</Link> </Form.Item>
-                    </Form>
-                </Row>
-            </div>
-        );
-    }
+                  onFinish={onFinish}
+                  onFinishFailed={onFinishFailed}
+            >
+                <Form.Item
+                    name="username"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your email!',
+                        }
+                    ]}>
+                    <Input
+                        prefix={<UserOutlined/>}
+                        placeholder="Email"
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="password"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your Password!'
+                        }
+                    ]}>
 
+                    <Input
+                        prefix={<LockOutlined/>}
+                        type="password"
+                        placeholder="Password"
+                    />
 
+                </Form.Item>
+                <Form.Item
+                    name="code"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your Password!'
+                        }
+                    ]}>
+                    <Input
+                        prefix={<LockOutlined/>}
+                        type="string"
+                        placeholder="Code"
+                    />
+                </Form.Item>
+                <Form.Item>
+
+                    <Button type="primary" htmlType="submit" style={styles.loginFormButton}>
+                        Change password
+                    </Button>
+                    Or try to <Link to="login">login</Link> </Form.Item>
+            </Form>
+        </Row>
+    </div>
 }
-
-export const
-    WrappedForgotPasswordEmailCodeForm = Form.create({name: 'normal_login'})(ForgotPasswordEmailCodeForm);
