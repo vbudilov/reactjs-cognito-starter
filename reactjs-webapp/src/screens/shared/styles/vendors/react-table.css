@@ -1,0 +1,33 @@
+.ReactTable {
+    width: 100%;
+}
+
+.ReactTable .rt-th,
+.ReactTable .rt-td {
+    padding: 12px 15px;
+}
+
+.ReactTable .rt-th.rt-expandable,
+.ReactTable .rt-td.rt-expandable {
+    padding: 0;
+}
+
+.ReactTable .rt-thead .rt-th,
+.ReactTable .rt-thead .rt-td {
+    padding: 12px 15px;
+}
+
+.ReactTable .rt-thead .rt-th.rt-expandable,
+.ReactTable .rt-thead .rt-td.rt-expandable {
+    padding: 0;
+}
+
+.ReactTable .rt-td > div {
+    padding: 3px 10px;
+}
+
+@media screen and (max-width: 399px) {
+    .ReactTable .-pagination {
+        flex-direction: column;
+    }
+}

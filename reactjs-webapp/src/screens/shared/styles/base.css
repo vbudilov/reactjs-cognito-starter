@@ -1,0 +1,55 @@
+@import '../../assets/vendors/material-design-icon/css/material-design-iconic-font.min.css';
+
+:root {
+    --light: Gilroy-Light;
+    --regular: Gilroy-Regular;
+    --medium: Gilroy-Medium;
+    --bold: Gilroy-Bold;
+    --extra-bold: Gilroy-ExtraBold;
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    line-height: 1.35 !important;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+h2 {
+    font-size: 30px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 22px;
+}
+
+h5 {
+    font-size: 18px;
+}
+
+h6 {
+    font-size: 16px;
+}

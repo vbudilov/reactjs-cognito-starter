@@ -1,0 +1,204 @@
+/* Calendar Module Style */
+.app-calendar,
+.rbc-calendar {
+    width: 100%;
+}
+
+.app-calendar .rbc-calendar {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: calc(100vh - 360px);
+}
+
+.app-cul-calendar .rbc-calendar {
+    min-height: calc(100vh - 400px);
+}
+
+.rbc-toolbar button:active,
+.rbc-toolbar button.rbc-active {
+    background-image: none;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.rbc-month-row {
+    min-height: 100px;
+}
+
+.rbc-event {
+    min-height: 50px;
+}
+
+.rbc-event:focus {
+    outline: none;
+}
+
+.cr-calendar .react-daypicker-root {
+    border: solid 1px #e5e9ec;
+    border-radius: 30px;
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+}
+
+.cr-calendar table {
+    width: 100%;
+    height: calc(100% - 30px);
+}
+
+.cr-calendar table td {
+    position: relative;
+}
+
+.cr-calendar table th {
+    text-transform: uppercase;
+    font-family: var(--light);
+    font-size: 15px;
+}
+
+.cr-calendar .header .month-year {
+    font-family: var(--extra-bold);
+    padding-top: 3px;
+}
+
+.cr-calendar-color .react-daypicker-root {
+    border: 0 none;
+    font-size: 20px;
+}
+
+.cr-calendar-color .header {
+    padding: 30px;
+    margin: -30px -30px 0;
+}
+
+.cr-calendar-color .header .month-year {
+    font-size: 22px;
+}
+
+.cr-calendar-color table {
+    font-family: var(--extra-bold);
+    height: calc(100% - 60px);
+}
+
+.cr-calendar-color table thead th {
+    font-family: var(--extra-bold);
+    font-size: 20px;
+}
+
+@media screen and (max-width: 1919px) {
+    .cr-calendar .react-daypicker-root {
+        padding: 20px;
+    }
+
+    .cr-calendar .react-daypicker-root th,
+    .cr-calendar .react-daypicker-root td {
+        width: 30px;
+    }
+
+    .cr-calendar table th,
+    .cr-calendar table td {
+        font-size: 12px;
+    }
+
+    .cr-calendar-color .react-daypicker-root {
+        font-size: 16px;
+    }
+
+    .cr-calendar-color .header {
+        padding: 20px;
+        margin: -20px -20px 0;
+    }
+
+    .cr-calendar-color .header .month-year {
+        font-size: 18px;
+    }
+
+    .cr-calendar-color table thead th {
+        font-size: 15px;
+    }
+
+    .cr-calendar-color table {
+        height: calc(100% - 70px);
+    }
+}
+
+@media screen and (max-width: 1367px) {
+    .cr-calendar-color table thead th {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 959px) {
+    .rbc-toolbar {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        display: -o-flex;
+        display: flex;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        -webkit-align-items: flex-start;
+        align-items: flex-start;
+    }
+
+    .rbc-toolbar .rbc-toolbar-label {
+        margin: 8px 0;
+    }
+
+    .cr-calendar table {
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 599px) {
+    .cr-calendar .react-daypicker-root {
+        padding: 10px;
+    }
+
+    .cr-calendar .react-daypicker-root th,
+    .cr-calendar .react-daypicker-root td {
+        width: 20px;
+    }
+
+    .app-calendar .rbc-calendar {
+        min-height: 400px;
+    }
+
+    .app-cul-calendar .rbc-calendar {
+        min-height: 400px;
+    }
+}
+
+@media screen and (max-width: 467px) {
+    .rbc-toolbar {
+        font-size: 12px;
+    }
+
+    .rbc-toolbar button {
+        padding: 5px 10px;
+    }
+
+    .cr-calendar table th,
+    .cr-calendar table td {
+        font-size: 12px;
+    }
+}

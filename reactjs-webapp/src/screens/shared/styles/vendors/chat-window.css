@@ -1,0 +1,59 @@
+/*Apps style*/
+
+.sc-launcher {
+    cursor: pointer;
+    z-index: 999;
+    display: none;
+}
+
+.sc-header--img {
+    width: 50px;
+    height: 50px;
+    padding: 0 !important;
+    margin-right: 5px;
+}
+
+.sc-chat-window {
+    bottom: 25px !important;
+    z-index: 999;
+    max-height: 380px !important;
+}
+
+.sc-header {
+    padding: 12px 16px !important;
+}
+
+.sc-header--team-name {
+    font-family: var(--extra-bold) !important;
+    font-size: 18px;
+}
+
+@media (max-width: 1367px) {
+    .sc-header--img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .sc-header {
+        min-height: 65px;
+    }
+
+    .sc-header--team-name {
+        font-size: 16px;
+    }
+
+    .sc-message--text {
+        padding: 12px 16px !important;
+    }
+}
+
+@media (max-width: 599px) {
+    .sc-chat-window {
+        width: 300px !important;
+        height: 80% !important;
+        border-radius: 10px !important;
+        right: 10px !important;
+        bottom: 10px !important;
+        overflow: hidden;
+    }
+}

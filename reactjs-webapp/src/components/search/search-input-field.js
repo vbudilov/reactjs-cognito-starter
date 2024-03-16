@@ -1,109 +1,65 @@
 import React from 'react';
-import {AutoComplete, Input} from 'antd';
+import {Input} from 'antd';
 import {Logger} from '@aws-amplify/core';
-import {SearchOutlined} from "@ant-design/icons";
+import {createBrowserHistory} from 'history';
+import {withRouter} from 'react-router-dom'
 
-const {Option, OptGroup} = AutoComplete;
+const history = createBrowserHistory();
+const {Search} = Input;
 
-export class SearchInputField extends React.Component {
-
-    logger = new Logger("SearchInputField");
-    dataSource = [
-        {
-            id: 'podcasts',
-            title: 'Podcasts',
-        },
-        {
-            id: 'episodes',
-            title: 'Episodes',
-        }
-    ];
+class SearchInputField extends React.Component {
 
     state = {
-        podcasts: {
-            children: [
-                {
-                    title: 'Jordan Peterson',
-                    description: "Great podcast about great topics",
-                },
-                {
-                    title: 'Joe Rogan',
-                    description: "Great podcast about great topics",
-                },
-            ],
-        }, episodes: {
-            children: [
-                {
-                    title: 'Episode #1',
-                    description: "Great episode about great topics",
-                },
-                {
-                    title: 'Episode #2',
-                    description: "Great episode about great topics",
-                },
-            ],
-        }
+        query: "",
     };
 
-    options = this.dataSource
-        .map(group => (
-            <OptGroup key={group.title} label={this.renderTitle(group.title)}>
-                {this.state[group.id].children.map(opt => (
-                    <Option key={opt.title} value={opt.title}>
-                        {opt.title}
-                        <div>
-                            <span className="certain-search-item-count" style={{fontSize: 10}}> {opt.description}</span>
-                        </div>
-                    </Option>
-                ))}
-            </OptGroup>
-        ))
-        .concat([
-            <Option disabled key="all" className="show-all">
-                <a href="https://www.google.com/search?q=antd" target="_blank" rel="noopener noreferrer">
-                    View all results
-                </a>
-            </Option>,
-        ]);
+    logger = new Logger("SearchInputField");
 
-    renderTitle(title) {
-        return (
-            <span>
-      {title}
-                <a
-                    style={{float: 'right'}}
-                    href="https://www.google.com/search?q=antd"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-        more
-      </a>
-    </span>
-        );
+    constructor(props) {
+        super(props);
     }
 
-    kickoffSearch(query) {
-        this.logger.debug("search query: " + query);
-
+    componentDidMount() {
+        this.logger.info("this.props: " + JSON.stringify(this.props));
+        // const { query } = this.props.match.params
+        // this.logger.info("query: " + query)
     }
+
+    kickoffSearch = async (query) => {
+        this.logger.info("search query: " + query + " location: " + JSON.stringify(this.props));
+
+        if (query === null || query.trim() === "")
+            return;
+
+        let location = {
+            pathname: '/search',
+            state: {fromDashboard: true}
+        };
+
+        this.props.history.push('/search?query=' + query)
+        // history.push('/search?query=' + query)
+        // window.location = '/search?query=' + query;
+    };
 
     render() {
-        return (<div>
-            <div className="certain-category-search-wrapper" style={{width: "90%"}}>
-                <AutoComplete
-                    className="certain-category-search"
-                    dropdownClassName="certain-category-search-dropdown"
-                    dropdownMatchSelectWidth={true}
-                    dropdownStyle={{width: 400}}
-                    size="large"
-                    style={{width: '100%'}}
-                    dataSource={this.options}
-                    placeholder="type here"
-                    optionLabelProp="value"
-                >
-                    <Input suffix={<SearchOutlined className="certain-category-icon"/>}/>
-                </AutoComplete>
-            </div>
+        let size = "350px";
+
+        if (this.props.size != null)
+            size = this.props.size;
+
+        return (<div style={{width: size}}>
+
+            <Search
+                placeholder="search..."
+                onSearch={value => this.kickoffSearch(value)}
+                // onChange={value => this.searchOnTyping(value)}
+                style={{
+                    padding: "18px 0"
+                }}
+                enterButton
+            />
         </div>)
     }
 }
+
+export default withRouter(SearchInputField)
