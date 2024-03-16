@@ -46,3 +46,11 @@ style="float: left; margin: 20px;" />
 
 <img src="public/img/password-reset.png"
 style="float: left; margin: 20px;" />
+
+### Docker
+
+```shell
+docker build -t my-react-app .
+docker run -p 3000:3000 my-react-app
+
+```
