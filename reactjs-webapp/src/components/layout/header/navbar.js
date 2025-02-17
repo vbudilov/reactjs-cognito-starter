@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import makeStyles from '@mui/styles/makeStyles';
 import {Link, useHistory} from "react-router-dom";
-import {Box} from "@mui/material";
+import {Box, Container} from "@mui/material";
 import Hidden from "@mui/material/Hidden";
 import {AuthService} from "../../../screens/auth/service/auth-service";
 import {Search} from "@mui/icons-material";
@@ -36,42 +36,46 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     appBar: {
-        borderBottom: `1px solid ${theme.palette.divider}`,
+        borderBottom: 'none',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        backdropFilter: 'blur(8px)',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
     },
     toolbar: {
         flexWrap: 'wrap',
+        minHeight: '70px',
+        padding: '0 24px',
     },
     toolbarTitle: {
         flexGrow: 1,
+        display: 'flex',
+        alignItems: 'center',
     },
     link: {
         margin: theme.spacing(1, 1.5),
+        textDecoration: 'none',
     },
-    heroContent: {
-        padding: theme.spacing(8, 0, 6),
+    button: {
+        borderRadius: '8px',
+        padding: '8px 20px',
+        transition: 'all 0.2s ease',
+        '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        },
     },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.mode === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
+    searchButton: {
+        marginRight: theme.spacing(2),
+        color: theme.palette.text.secondary,
     },
-    cardPricing: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'baseline',
-        marginBottom: theme.spacing(2),
-    },
-    footer: {
-        borderTop: `1px solid ${theme.palette.divider}`,
-        marginTop: theme.spacing(8),
-        paddingTop: theme.spacing(3),
-        paddingBottom: theme.spacing(3),
-        [theme.breakpoints.up('sm')]: {
-            paddingTop: theme.spacing(6),
-            paddingBottom: theme.spacing(6),
+    logo: {
+        width: '160px',
+        transition: 'transform 0.2s ease',
+        '&:hover': {
+            transform: 'scale(1.05)',
         },
     },
 }));
-
 
 export function MyTopAppBar(props) {
     const classes = useStyles();
@@ -91,47 +95,47 @@ export function MyTopAppBar(props) {
 
     return (
         <Box flexDirection="row" width={1}>
-
             <CssBaseline/>
-            <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
-                <Toolbar className={classes.toolbar}>
-                    <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-                        <Link to={"/"}>
-                            <img src={window.location.origin + '/logos/logo-md.png'}
-                                 style={{width: "190px"}} alt={""}/>
-                        </Link>
-                    </Typography>
+            <AppBar position="sticky" className={classes.appBar}>
+                <Container maxWidth="lg">
+                    <Toolbar className={classes.toolbar}>
+                        <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
+                            <Link to={"/"}>
+                                <img src={window.location.origin + '/logos/logo-md.png'}
+                                     className={classes.logo} alt="Logo"/>
+                            </Link>
+                        </Typography>
 
-                    {/*<Hidden smDown>*/}
-                    {/*    {loggedIn &&*/}
-                    {/*        <Link to={"/alttext"}>*/}
-                    {/*            <Button startIcon={<ReceiptLongIcon/>}>Alt Text</Button>*/}
-                    {/*        </Link>*/}
-                    {/*    }*/}
-                    {/*</Hidden>*/}
+                        <Hidden smDown>
+                            <Link to={"/"} className={classes.link}>
+                                <Button
+                                    startIcon={<Search/>}
+                                    className={classes.searchButton}
+                                />
+                            </Link>
+                        </Hidden>
 
+                        {props.loggedIn &&
+                            <DropDownNavBarMenu loggedIn={loggedIn} logoutFunction={logout} loggedInUser={user}/>
+                        }
 
-                    <Hidden smDown>
-                        <Link to={"/"}><Button startIcon={<Search/>}></Button></Link>
-                    </Hidden>
-
-
-                    {props.loggedIn &&
-                        <DropDownNavBarMenu loggedIn={loggedIn} logoutFunction={logout} loggedInUser={user}/>
-                    }
-
-                    {/* The user isn't logged in */}
-                    {!loggedIn && <Link to={"/login"}>
-                        <Button variant={"outlined"} size={"small"} color="secondary">
-                            Login
-                        </Button>
-                    </Link>}
-
-                </Toolbar>
+                        {!loggedIn &&
+                            <Link to={"/login"} className={classes.link}>
+                                <Button
+                                    variant="contained"
+                                    size="medium"
+                                    color="primary"
+                                    className={classes.button}
+                                >
+                                    Login
+                                </Button>
+                            </Link>
+                        }
+                    </Toolbar>
+                </Container>
             </AppBar>
         </Box>
-    )
-        ;
+    );
 }
 
 export default MyTopAppBar;

@@ -1,0 +1,47 @@
+schemaVersion: 2.2.0
+metadata:
+  name: reactjs-app
+  version: 1.0.0
+attributes:
+  controller.devfile.io/storage-type: ephemeral
+components:
+  - name: tools
+    container:
+      image: node:16
+      memoryLimit: 4Gi
+      endpoints:
+        - name: web
+          targetPort: 3000
+          exposure: public
+      mountSources: true
+commands:
+  - id: install-dependencies
+    exec:
+      component: tools
+      commandLine: npm install
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+        isDefault: true
+  - id: start-dev
+    exec:
+      component: tools
+      commandLine: npm start
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: run
+        isDefault: true
+  - id: build
+    exec:
+      component: tools
+      commandLine: npm run build
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+  - id: test
+    exec:
+      component: tools
+      commandLine: npm test
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: test
