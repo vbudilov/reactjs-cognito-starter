@@ -17,12 +17,16 @@ import {Link} from "react-router-dom";
 import Button from "@mui/material/Button";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import Box from "@mui/material/Box";
 
 const logger = new Logger('FullLayout');
 const styles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         backgroundColor: "#ece8e8",
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh'
     },
     paper: {
         textAlign: 'center',
@@ -30,10 +34,36 @@ const styles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: theme.spacing(2),
+        position: 'fixed',
+        left: theme.spacing(2),
+        top: theme.spacing(9),
+        zIndex: 1100,
+        backgroundColor: theme.palette.background.paper,
+        '&:hover': {
+            backgroundColor: theme.palette.action.hover,
+        },
     },
     drawerPaper: {
         width: 240,
+        backgroundColor: theme.palette.background.default,
+        borderRight: 'none',
+        boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.1)',
     },
+    content: {
+        flexGrow: 1,
+        display: 'flex',
+    },
+    mainContent: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+    },
+    sidebar: {
+        width: 240,
+        flexShrink: 0,
+        [theme.breakpoints.down('sm')]: {
+            display: 'none'
+        }
+    }
 }));
 
 export function FullLayout(props) {
@@ -66,7 +96,6 @@ export function FullLayout(props) {
 
         Hub.listen(AuthService.CHANNEL, onHubCapsule);
 
-
         Auth.currentAuthenticatedUser({
             bypassCache: true
         }).then(user => {
@@ -89,92 +118,104 @@ export function FullLayout(props) {
     }, [])
 
     const drawer = (
-        <div>
-            <Grid>
-                <Grid>
+        <Box sx={{ p: 2 }}>
+            <Grid container direction="column" spacing={2}>
+                <Grid item>
                     {loggedIn &&
-                        <Link to={"/alttext"}>
-                            <Button startIcon={<AccountBalanceIcon/>}>Alt Text</Button>
+                        <Link to={"/alttext"} style={{ textDecoration: 'none' }}>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                startIcon={<AccountBalanceIcon/>}
+                                sx={{ justifyContent: 'flex-start' }}
+                            >
+                                Alt Text
+                            </Button>
                         </Link>
                     }
                 </Grid>
 
-                <Grid>
-                    {/* The user isn't logged in */}
-                    {!loggedIn && <Link to={"/login"}>
-                        <Button variant={"outlined"} size={"small"} color="secondary">
-                            Login
-                        </Button>
-                    </Link>}
+                <Grid item>
+                    {!loggedIn &&
+                        <Link to={"/login"} style={{ textDecoration: 'none' }}>
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                color="secondary"
+                                sx={{ justifyContent: 'flex-start' }}
+                            >
+                                Login
+                            </Button>
+                        </Link>
+                    }
                 </Grid>
             </Grid>
-        </div>
+        </Box>
     );
 
     return (
         <div className={classes.root}>
-            {isMobile && (
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={handleDrawerToggle}
-                    className={classes.menuButton}
+            <MyTopAppBar loggedIn={loggedIn} loggedInUser={loggedInUser}/>
+
+            <div className={classes.content}>
+                {/* Permanent sidebar for desktop */}
+                <Box component="nav" className={classes.sidebar}>
+                    <Drawer
+                        variant="permanent"
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        anchor="left"
+                    >
+                        {drawer}
+                    </Drawer>
+                </Box>
+
+                {/* Mobile menu button */}
+                {isMobile && (
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        className={classes.menuButton}
+                        size="large"
+                    >
+                        <MenuIcon/>
+                    </IconButton>
+                )}
+
+                {/* Temporary drawer for mobile */}
+                <Drawer
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                    ModalProps={{
+                        keepMounted: true,
+                    }}
                 >
-                    <MenuIcon/>
-                </IconButton>
-            )}
-            <Drawer
-                variant="temporary"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-                ModalProps={{
-                    keepMounted: true, // Better open performance on mobile.
-                }}
-            >
-                {drawer}
-            </Drawer>
-            <Grid container rowSpacing={1} justifyContent="flex-end"
-                  columnSpacing={{xs: 1, sm: 2, md: 3, width: "100%"}}>
-                <Grid container rowSpacing={1} justifyContent="flex-end"
-                      columnSpacing={{xs: 1, sm: 2, md: 3, width: "100%"}}>
+                    {drawer}
+                </Drawer>
 
+                <main className={classes.mainContent}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            {loggedIn && <div></div>}
+                        </Grid>
 
-                    <Grid item xs={12} style={{
-                        minWidth: "1200",
-                        maxWidth: "1200"
-                    }}>
-                        <MyTopAppBar loggedIn={loggedIn} loggedInUser={loggedInUser}/>
+                        <Grid item xs={12}>
+                            <Routes/>
+                        </Grid>
+
+                        <FloatingActionButtonZoom/>
                     </Grid>
+                </main>
+            </div>
 
-                    <Grid item xs={12} style={{
-                        minWidth: "1200",
-                        maxWidth: "1200"
-                    }}>
-                        {loggedIn && <div></div>}
-                    </Grid>
-
-                    <Grid container item xs={12} style={{
-                        minWidth: "1200",
-                        maxWidth: "1200",
-                    }}>
-
-                        <Routes/>
-
-                    </Grid>
-
-                    <FloatingActionButtonZoom/>
-
-                    <Grid item xs={12} style={{}}>
-                        <Footer/>
-                    </Grid>
-
-                </Grid>
-
-            </Grid>
+            <Footer/>
         </div>
     );
 }

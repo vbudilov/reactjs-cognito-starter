@@ -6,6 +6,7 @@ import {makeStyles} from '@mui/styles';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import PermIdentityTwoToneIcon from '@mui/icons-material/PermIdentityTwoTone';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const useStyles = makeStyles((theme) => ({
     menuButton: {
@@ -78,6 +79,12 @@ export function DropDownNavBarMenu(props) {
                 {/*        <Typography variant="inherit">File Uploads</Typography>*/}
                 {/*    </MenuItem>*/}
                 {/*</Link>*/}
+                <Link to="/settings" className={classes.menuLink}>
+                    <MenuItem onClick={handleClose} className={classes.menuItem}>
+                        <ListItemIcon className={classes.menuItemIcon}><SettingsIcon/></ListItemIcon>
+                        <Typography variant="inherit">Settings</Typography>
+                    </MenuItem>
+                </Link>
                 <Divider/>
 
                 {loggedIn ? (
