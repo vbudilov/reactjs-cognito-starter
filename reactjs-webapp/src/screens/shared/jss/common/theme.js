@@ -5,19 +5,19 @@ const theme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: MonochromeColors.BLACK,
-            light: MonochromeColors.DARK_GRAY,
-            dark: MonochromeColors.ALMOST_BLACK,
+            main: MonochromeColors.PRIMARY_BLUE,
+            light: MonochromeColors.SECONDARY_BLUE,
+            dark: MonochromeColors.ACTIVE_BLUE,
         },
         secondary: {
-            main: MonochromeColors.DARK_BLUE,
-            light: MonochromeColors.SOFT_BLUE,
-            dark: MonochromeColors.ALMOST_BLACK,
+            main: MonochromeColors.ACCENT_TEAL,
+            light: MonochromeColors.ACCENT_PURPLE,
+            dark: MonochromeColors.ACCENT_ROSE,
         },
         text: {
             primary: MonochromeColors.BLACK,
             secondary: MonochromeColors.DARK_GRAY,
-            disabled: MonochromeColors.LIGHT_GRAY_ACCENT,
+            disabled: MonochromeColors.DISABLED_BUTTON,
         },
         background: {
             default: MonochromeColors.LIGHT_GRAY,
@@ -44,7 +44,10 @@ const theme = createTheme({
                     backgroundColor: MonochromeColors.PRIMARY_BUTTON,
                     color: MonochromeColors.WHITE,
                     '&:hover': {
-                        backgroundColor: MonochromeColors.ALMOST_BLACK,
+                        backgroundColor: MonochromeColors.HOVER_BLUE,
+                    },
+                    '&:active': {
+                        backgroundColor: MonochromeColors.ACTIVE_BLUE,
                     },
                 },
             },

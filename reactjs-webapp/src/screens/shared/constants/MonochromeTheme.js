@@ -1,22 +1,30 @@
 export const MonochromeColors = {
     // Primary Colors
     WHITE: '#FFFFFF',
-    BLACK: '#000000',
+    BLACK: '#1A1A2E',
     
-    // Secondary (Gray Scale) Colors
-    LIGHT_GRAY: '#F8F9FA',
-    MEDIUM_GRAY: '#E5E7EB',
-    DARK_GRAY: '#6B7280',
-    ALMOST_BLACK: '#111827',
+    // Base Colors
+    PRIMARY_BLUE: '#2A4365',
+    SECONDARY_BLUE: '#3B82F6',
+    
+    // Secondary Colors
+    LIGHT_GRAY: '#F3F4F6',
+    MEDIUM_GRAY: '#E2E8F0',
+    DARK_GRAY: '#64748B',
+    ALMOST_BLACK: '#0F172A',
     
     // Accent Colors
-    SOFT_BLUE: '#D1D5DB',
-    DARK_BLUE: '#374151',
-    LIGHT_GRAY_ACCENT: '#9CA3AF',
+    ACCENT_TEAL: '#0D9488',
+    ACCENT_PURPLE: '#7C3AED',
+    ACCENT_ROSE: '#E11D48',
     
-    // Button Colors (redundant but semantic)
-    PRIMARY_BUTTON: '#000000',
-    DISABLED_BUTTON: '#D1D5DB',
+    // Semantic Colors
+    PRIMARY_BUTTON: '#2A4365',
+    DISABLED_BUTTON: '#94A3B8',
+    
+    // Interactive States
+    HOVER_BLUE: '#1E40AF',
+    ACTIVE_BLUE: '#1E3A8A',
 };
 
 export const ChartColors = {
