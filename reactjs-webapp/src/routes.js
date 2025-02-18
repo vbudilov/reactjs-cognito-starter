@@ -3,6 +3,7 @@ import {ProtectedRoute} from "./screens/auth/auth-screen";
 import React from "react";
 import {UploadNewImage} from "./screens/alttext/upload-new-image";
 import {Dashboard} from "./screens/dashboard/dashboard";
+import {Documents} from "./screens/documents/documents";
 
 export function Routes() {
 
@@ -17,6 +18,11 @@ export function Routes() {
         <ProtectedRoute
             exact path='/alttext'
             component={UploadNewImage}
+        />
+
+        <ProtectedRoute
+            exact path='/documents'
+            component={Documents}
         />
 
         <Route path="*">

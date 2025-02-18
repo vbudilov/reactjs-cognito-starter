@@ -17,6 +17,7 @@ import {Link} from "react-router-dom";
 import Button from "@mui/material/Button";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import ArticleIcon from "@mui/icons-material/Article";
 import Box from "@mui/material/Box";
 
 const logger = new Logger('FullLayout');
@@ -62,6 +63,18 @@ const styles = makeStyles((theme) => ({
         flexShrink: 0,
         [theme.breakpoints.down('sm')]: {
             display: 'none'
+        }
+    },
+    navButton: {
+        marginBottom: theme.spacing(1),
+        borderRadius: theme.spacing(1),
+        padding: theme.spacing(1.5),
+        textTransform: 'none',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
         }
     }
 }));
@@ -120,20 +133,42 @@ export function FullLayout(props) {
     const drawer = (
         <Box sx={{ p: 2 }}>
             <Grid container direction="column" spacing={2}>
-                <Grid item>
-                    {loggedIn &&
-                        <Link to={"/alttext"} style={{ textDecoration: 'none' }}>
-                            <Button
-                                fullWidth
-                                variant="contained"
-                                startIcon={<AccountBalanceIcon/>}
-                                sx={{ justifyContent: 'flex-start' }}
-                            >
-                                Alt Text
-                            </Button>
-                        </Link>
-                    }
-                </Grid>
+                {loggedIn && <Grid item>
+                    <Link to={"/alttext"} style={{ textDecoration: 'none', display: 'block', marginBottom: '12px' }}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            startIcon={<ArticleIcon />}
+                            className={classes.navButton}
+                            sx={{
+                                backgroundColor: theme.palette.primary.main,
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: theme.palette.primary.dark,
+                                }
+                            }}
+                        >
+                            Alt Text
+                        </Button>
+                    </Link>
+                    <Link to={"/documents"} style={{ textDecoration: 'none', display: 'block' }}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            startIcon={<ReceiptLongIcon />}
+                            className={classes.navButton}
+                            sx={{
+                                backgroundColor: theme.palette.primary.main,
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: theme.palette.primary.dark,
+                                }
+                            }}
+                        >
+                            Documents
+                        </Button>
+                    </Link>
+                </Grid>}
 
                 <Grid item>
                     {!loggedIn &&
@@ -142,7 +177,11 @@ export function FullLayout(props) {
                                 fullWidth
                                 variant="outlined"
                                 color="secondary"
-                                sx={{ justifyContent: 'flex-start' }}
+                                className={classes.navButton}
+                                sx={{
+                                    borderWidth: '2px',
+                                    fontWeight: 600
+                                }}
                             >
                                 Login
                             </Button>

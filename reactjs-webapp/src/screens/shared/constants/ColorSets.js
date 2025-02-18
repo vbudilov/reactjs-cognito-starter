@@ -1,33 +1,35 @@
+import MonochromeColors from './MonochromeTheme';
+
 export default [
     {
-        PrimaryColor: '#0A8FDC',
-        SecondaryColor: '#F04F47',
-        SidebarColor: '#313541',
+        PrimaryColor: MonochromeColors.BLACK,
+        SecondaryColor: MonochromeColors.DARK_GRAY,
+        SidebarColor: MonochromeColors.ALMOST_BLACK,
     },
     {
-        PrimaryColor: '#905EAE',
-        SecondaryColor: '#2D755A',
-        SidebarColor: '#313541',
+        PrimaryColor: MonochromeColors.DARK_BLUE,
+        SecondaryColor: MonochromeColors.MEDIUM_GRAY,
+        SidebarColor: MonochromeColors.ALMOST_BLACK,
     },
     {
-        PrimaryColor: '#266BB0',
-        SecondaryColor: '#587527',
-        SidebarColor: '#313541',
+        PrimaryColor: MonochromeColors.BLACK,
+        SecondaryColor: MonochromeColors.LIGHT_GRAY,
+        SidebarColor: MonochromeColors.ALMOST_BLACK,
     },
     {
-        PrimaryColor: '#F0464D',
-        SecondaryColor: '#00B6EF',
-        SidebarColor: '#313541',
+        PrimaryColor: MonochromeColors.DARK_GRAY,
+        SecondaryColor: MonochromeColors.MEDIUM_GRAY,
+        SidebarColor: MonochromeColors.ALMOST_BLACK,
     },
     {
-        PrimaryColor: '#639F52',
-        SecondaryColor: '#7C4D30',
-        SidebarColor: '#313541',
+        PrimaryColor: MonochromeColors.ALMOST_BLACK,
+        SecondaryColor: MonochromeColors.DARK_GRAY,
+        SidebarColor: MonochromeColors.ALMOST_BLACK,
     },
     {
-        PrimaryColor: '#FFD955',
-        SecondaryColor: '#C4476D',
-        SidebarColor: '#313541',
+        PrimaryColor: MonochromeColors.BLACK,
+        SecondaryColor: MonochromeColors.DARK_BLUE,
+        SidebarColor: MonochromeColors.ALMOST_BLACK,
     },
 
     {
