@@ -31,7 +31,7 @@ export default function FloatingActionButtonZoom() {
 
     return (
         <Box sx={{position: 'fixed', right: 20, bottom: 20}}>
-            <Fab color="primary" onClick={handleExpandClick}>
+            <Fab sx={{ bgcolor: 'grey.800', color: 'white', '&:hover': { bgcolor: 'grey.900' } }} onClick={handleExpandClick}>
                 <AddIcon/>
             </Fab>
             {expanded && actionButtons.map((button, index) => (
@@ -48,7 +48,7 @@ export default function FloatingActionButtonZoom() {
                             {button.name}
                         </Typography>
                         <Link to={button.linkTo} style={{textDecoration: 'none'}}>
-                            <Fab color="secondary" size="small" onClick={() => setExpanded(false)}>
+                            <Fab sx={{ bgcolor: 'grey.700', color: 'white', '&:hover': { bgcolor: 'grey.800' } }} size="small" onClick={() => setExpanded(false)}>
                                 {button.icon}
                             </Fab>
                         </Link>

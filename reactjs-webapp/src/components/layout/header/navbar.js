@@ -106,14 +106,14 @@ export function MyTopAppBar(props) {
                             </Link>
                         </Typography>
 
-                        <Hidden smDown>
-                            <Link to={"/"} className={classes.link}>
-                                <Button
-                                    startIcon={<Search/>}
-                                    className={classes.searchButton}
-                                />
-                            </Link>
-                        </Hidden>
+                        {/*<Hidden smDown>*/}
+                        {/*    <Link to={"/"} className={classes.link}>*/}
+                        {/*        <Button*/}
+                        {/*            startIcon={<Search/>}*/}
+                        {/*            className={classes.searchButton}*/}
+                        {/*        />*/}
+                        {/*    </Link>*/}
+                        {/*</Hidden>*/}
 
                         {props.loggedIn &&
                             <DropDownNavBarMenu loggedIn={loggedIn} logoutFunction={logout} loggedInUser={user}/>
