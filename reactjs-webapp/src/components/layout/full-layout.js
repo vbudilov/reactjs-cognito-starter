@@ -52,12 +52,13 @@ const styles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.default,
         borderRight: 'none',
         boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.1)',
-        top: '64px', // Height of AppBar
-        height: 'calc(100vh - 64px)'
+        marginTop: '70px', // Changed from top: '64px' to marginTop
+        height: 'calc(100vh - 70px)' // Adjusted height to match new top margin
     },
     content: {
         flexGrow: 1,
         display: 'flex',
+        marginTop: '0', // Added to ensure no gap between header and content
     },
     mainContent: {
         flexGrow: 1,
