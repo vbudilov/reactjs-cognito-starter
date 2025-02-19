@@ -1,5 +1,3 @@
-
-
 // Modified FullLayout.js
 import React, {useEffect, useState} from "react";
 import MyTopAppBar from "./header/navbar";
@@ -28,6 +26,12 @@ const styles = makeStyles((theme) => ({
         flexDirection: 'column',
         minHeight: '100vh'
     },
+    header: {
+        position: 'sticky',
+        top: 0,
+        zIndex: 1200,
+        backgroundColor: theme.palette.background.paper
+    },
     paper: {
         textAlign: 'center',
         color: theme.palette.text.secondary,
@@ -48,6 +52,8 @@ const styles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.default,
         borderRight: 'none',
         boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.1)',
+        top: '64px', // Height of AppBar
+        height: 'calc(100vh - 64px)'
     },
     content: {
         flexGrow: 1,
@@ -119,7 +125,9 @@ export function FullLayout(props) {
 
     return (
         <div className={classes.root}>
-            <MyTopAppBar loggedIn={loggedIn} loggedInUser={loggedInUser}/>
+            <div className={classes.header}>
+                <MyTopAppBar loggedIn={loggedIn} loggedInUser={loggedInUser}/>
+            </div>
 
             <div className={classes.content}>
                 {/* Permanent sidebar for desktop */}
