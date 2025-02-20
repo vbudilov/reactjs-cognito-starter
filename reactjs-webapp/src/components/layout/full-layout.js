@@ -15,7 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { SideNavbar } from './sidnav';
+import { SideNavbar } from './sidenav';
 
 const logger = new Logger('FullLayout');
 const styles = makeStyles((theme) => ({
@@ -49,11 +49,12 @@ const styles = makeStyles((theme) => ({
     },
     drawerPaper: {
         width: 240,
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: '#f8f9fa',
         borderRight: 'none',
-        boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.1)',
-        marginTop: '70px', // Changed from top: '64px' to marginTop
-        height: 'calc(100vh - 70px)' // Adjusted height to match new top margin
+        boxShadow: '0 3px 10px rgba(0,0,0,0.08)',
+        marginTop: '70px',
+        height: 'calc(100vh - 70px)',
+        background: 'linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%)',
     },
     content: {
         flexGrow: 1,

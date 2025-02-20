@@ -37,9 +37,9 @@ const useStyles = makeStyles((theme) => ({
     },
     appBar: {
         borderBottom: 'none',
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(8px)',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+        backgroundColor: '#f8f9fa',
+        color: '#2d3436',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
     },
     toolbar: {
         flexWrap: 'wrap',
@@ -59,18 +59,22 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '8px',
         padding: '8px 20px',
         transition: 'all 0.2s ease',
+        backgroundColor: '#2d3436',
+        color: '#ffffff',
         '&:hover': {
             transform: 'translateY(-2px)',
             boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+            backgroundColor: '#1e2122',
         },
     },
     searchButton: {
         marginRight: theme.spacing(2),
-        color: theme.palette.text.secondary,
+        color: '#2d3436',
     },
     logo: {
         width: '160px',
         transition: 'transform 0.2s ease',
+        filter: 'none',
         '&:hover': {
             transform: 'scale(1.05)',
         },
